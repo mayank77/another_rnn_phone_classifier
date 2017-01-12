@@ -1,12 +1,12 @@
 #!/bin/bash
 #
+
 #  $1 scp file (train/eval/valid) 
-#  $2 speaker & sentence id (eg. 04682001-0003-598-1)
-#  $3 target location for a wav file
-#  $4 babble normalisation
-#  $5 speech normalisation
+#  $2 target location for a wav file
+#  $3 output rate (resample!)
+#  $4 normalisation 1
+#  $5 normalisation 2
+#
 
-#/teamwork/t40511_asr/p/digitala/models1/extract_wav.py $1 $2 | sox -t wav -r 16000 -c 1 -b 16 - $3
+sox $1 -t raw -r 8000 -c 1 -b 16 --encoding signed-integer $2 speed $3 norm $4 norm $5
 
-
-/teamwork/t40511_asr/p/digitala/models1/extract_wav.py $1 $2 | sox -t wav -r 16000 -c 1 -b 16 - $3 norm $4 norm $5
