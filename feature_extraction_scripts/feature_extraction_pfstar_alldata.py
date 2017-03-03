@@ -90,19 +90,19 @@ class extract_config:
     corpus = ""
     pickle_dir=''
     statistics_dir = ''
-
-
+    
+    lastframeindex = 0
+    extraframes = 4
     
 
     def __init__(self):
         dummy=1
     
-debug=True
 
 
 
 
-# In[452]:
+
 
 conf = extract_config()
 
@@ -111,8 +111,8 @@ conf = extract_config()
 conf.preprocessing_scripts = {#'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
                               'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
                               'overdrive' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_overdrive.sh', 'name' : 'overdrive', 'parameters': [[1,10], [-20,0]] },
-                              'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-50,-35],[-10,0]] },
-                              'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-40,-30],[-10,0]] } }
+                              'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-40,-25],[-10,0]] },
+                              'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-20,-10],[-10,0]] } }
 
 #feature_extraction_script = '../feature_extraction_scripts/extract_5500hz_spec_with_start_end.sh'
 conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_mspec66_with_start_end.sh'
@@ -158,6 +158,9 @@ conf.max_num_classes = 10000
 
 conf.feature_dimension=66#130
 
+conf.extraframes = 5
+
+
 '''
 # For 8 kHz samples:
 '''
@@ -187,7 +190,7 @@ conf.tmpfilecounter = 0
 # tmp directory for feature extraction.
 # This should reside in memory (tempfs or whatever it's called, often under /dev/shm/)
 
-conf.tmp_dir="/dev/shm/siak-feat-extract-python-"+str(time.time())
+conf.tmp_dir="/dev/shm/siak-feat-extract-pfs-python-"+str(time.time())
 try:
     os.makedirs(conf.tmp_dir)
 except OSError as exc:  # Python >2.5
@@ -204,6 +207,9 @@ print ('using tmp dir %s' % conf.tmp_dir)
 # 
 
 # In[454]:
+
+conf.labeltype = "pfstar"
+
 
 conf.class_def = {
 "sil" : {"count" : 6611, "probability" :0.04628649220995, "sqrt_probability" :0.2151429576118, "class" :45},
@@ -265,209 +271,223 @@ conf.class_def = {
 #
 
 
-conf.corpus = "en_uk_kids_align_from_clean"
+conf.corpus = "en_uk_kids_align_from_clean-2"
 conf.pickle_dir='../features/work_in_progress/'+conf.corpus+'/pickles'
 conf.statistics_dir = '../features/work_in_progress/'+conf.corpus+'/statistics/'
 
 collections = [        
 { "name" : "train.00.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.00.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.00.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.00.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00.d",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.00.e",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00.e",
-  "numlines": 78 , "condition" : "mixed" }, 
+  "numlines": 78 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.01.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.01.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.01.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.01.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01.d",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.01.e",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01.e",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.01.f",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01.f",
-  "numlines": 83 , "condition" : "mixed" }, 
+  "numlines": 83 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.02.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.02.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.02.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.02.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02.d",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.02.e",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02.e",
-  "numlines": 146 , "condition" : "mixed" }, 
+  "numlines": 146 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.03.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.03.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.03.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.03.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03.d",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.03.e",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03.e",
-  "numlines": 70 , "condition" : "mixed" }, 
+  "numlines": 70 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.04.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.04.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.04.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.04.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.04.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.04.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.04.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.04.d",
-  "numlines": 51 , "condition" : "mixed" }, 
+  "numlines": 51 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.05.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.05.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.05.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.05.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.05.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.05.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.05.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.05.d",
-  "numlines": 185 , "condition" : "mixed" }, 
+  "numlines": 185 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.06.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.06.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.06.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.06.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.06.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.06.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.06.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.06.d",
-  "numlines": 99 , "condition" : "mixed" }, 
+  "numlines": 99 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.07.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.07.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.07.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.07.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.07.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.07.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "train.07.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.07.d",
-  "numlines": 99 },  
+  "numlines": 99 , "condition" : "mixed", "training" : True },  
 { "name" : "eval.00.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "eval.00.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "eval.00.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "eval.00.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00.d",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "eval.00.e",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00.e",
-  "numlines": 37 , "condition" : "mixed" }, 
+  "numlines": 37 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.00.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.00.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.00.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.00.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00.d",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.00.e",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00.e",
-  "numlines": 52 , "condition" : "mixed" }, 
+  "numlines": 52 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.01.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.01.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.01.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.01.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.01.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.01.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.01.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.01.d",
-  "numlines": 152 , "condition" : "mixed" }, 
+  "numlines": 152 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.02.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.02.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.02.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.02.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.02.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.02.c",
-  "numlines": 194 , "condition" : "mixed" }, 
+  "numlines": 194 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.03.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.03.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.03.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.03.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.03.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.03.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.03.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.03.d",
-  "numlines": 158 , "condition" : "mixed" }, 
+  "numlines": 158 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.04.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.04.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.04.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.04.b",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.04.c",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.04.c",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.04.d",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.04.d",
-  "numlines": 134 , "condition" : "mixed" }, 
+  "numlines": 134 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.05.a",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.05.a",
-  "numlines": 200 , "condition" : "mixed" }, 
+  "numlines": 200 , "condition" : "mixed", "training" : True }, 
 { "name" : "test.05.b",
   "recipe" : "/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.05.b",
-  "numlines": 193 }
+  "numlines": 193, "condition" : "mixed", "training" : True   }
 ]
 
 
 
-for collection in collections:
-    extract_collection_and_save(conf, collection)
+#conf.debug=True
 
+numcores=1
+batchid=0
+
+
+if len(sys.argv)>2:
+    numcores=int(sys.argv[1])
+    batchid=int(sys.argv[2])
+
+
+counter=1
+for collection in collections:
+    print("counter %i %s numcores %i == batchid %i?" % ( counter, "%s", numcores, batchid ) )
+    if (counter%numcores) == batchid:
+        extract_collection_and_save(conf, collection)
+    counter +=1
 
 

@@ -4,7 +4,7 @@
 sptk="/usr/local/bin";
 sptk="/teamwork/t40511_asr/Modules/opt/sptk/3.8/bin"
 
-workdir=/dev/shm/siak-feat-extract/`date +"%s-%N"`
+workdir=/dev/shm/siak-feat-extract/`date +"%s-%N"`-$RANDOM-$RANDOM-$RANDOM
 
 mkdir -p $workdir
 
@@ -39,16 +39,17 @@ err=0
 # -o 2 would give us log(f0) but we'll take f0 instead:
 $sptk/pitch -a 1 -o 0 -s 8 -p $frame_step_samples -L 120 -H 300 $workdir/data.tmp.rawinput > $workdir/data.tmp.pitch8
 
-fft1len=256
-fft2len=256
+fft1len=512
+fft2len=128
 speclen=$(( fft2len / 2 + 1))
-numsmoothingceps=25
+numsmoothingceps=32
 numsynthceps=25
 
 $sptk/frame -p $frame_step_samples -l $frame_length_samples < $workdir/data.tmp.rawinput | $sptk/window -l $frame_length_samples -L $fft1len | $sptk/mcep -a 0.31 -l $fft1len -m $numsmoothingceps | c2sp -m $numsmoothingceps -o 2 -l $fft2len > $workdir/data.tmp.mspec8
 
-$sptk/merge -s $speclen -L $speclen -l 1 $workdir/data.tmp.mspec8 <  $workdir/data.tmp.pitch8 > $2
+$sptk/merge +f -s $speclen -L $speclen -l 1 $workdir/data.tmp.mspec8 <  $workdir/data.tmp.pitch8 > $2
 
+cat $2 > /tmp/testfeat
 
 if [ "$5" != "" ]; then 
     # In theory, these commands will resynthesise the utterance:

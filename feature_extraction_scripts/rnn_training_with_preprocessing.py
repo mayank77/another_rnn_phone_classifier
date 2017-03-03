@@ -3,30 +3,30 @@
 
 # In[62]:
 
+# python
 import numpy as np
 import pickle, os, random, math, sys
-
-import tensorflow as tf
-from tensorflow.python.ops import rnn, rnn_cell
-
-from sklearn.metrics import confusion_matrix
-
-import dnnutil
+from dnnutil import phonestash
 import importlib
-importlib.reload(dnnutil)
-
-phone_stash = dnnutil.phone_stash
-
+importlib.reload(phonestash)
+phone_stash = phonestash.phone_stash
 corpus = "en_uk_kids_align_from_clean"
 pickle_dir='../features/work_in_progress/'+corpus+'/pickles'
 
+traindata = phone_stash([ os.path.join(pickle_dir, 'train-0_mspec_and_f0.pickle'), 
+                          os.path.join(pickle_dir, 'train-1_mspec_and_f0.pickle'),
+                          os.path.join(pickle_dir, 'train-2_mspec_and_f0.pickle'),
+                          os.path.join(pickle_dir, 'train-3_mspec_and_f0.pickle'),
+                          os.path.join(pickle_dir, 'train-4_mspec_and_f0.pickle'),
+                          os.path.join(pickle_dir, 'train-5_mspec_and_f0.pickle'),
+                          os.path.join(pickle_dir, 'train-6_mspec_and_f0.pickle'),
+                          os.path.join(pickle_dir, 'train-7_mspec_and_f0.pickle'),
+                      ])#,  use_clean_references=True) #, show_samples=True)
 
 
-# In[64]:
 
-traindata = phone_stash([ os.path.join(pickle_dir, 'train-0.pickle'),
-                          os.path.join(pickle_dir, 'train-1.pickle') ])
-evaldata = phone_stash([ os.path.join(pickle_dir, 'train-2.pickle') ], zmean=traindata.mean, zstd=traindata.std, max_len=traindata.max_len)
+evaldata = phone_stash([ os.path.join(pickle_dir, 'eval-0_mspec_and_f0.pickle'),
+                         os.path.join(pickle_dir, 'eval-1_mspec_and_f0.pickle') ], zmean=traindata.mean, zstd=traindata.std, max_len=traindata.max_len)
 
 '''
 traindata = phone_stash([ os.path.join(pickle_dir, 'train-0.pickle'),
@@ -42,11 +42,18 @@ evaldata = phone_stash([ os.path.join(pickle_dir, 'test-0.pickle') ], zmean=trai
 '''
 
 
+
+import tensorflow as tf
+from tensorflow.python.ops import rnn, rnn_cell
+
+from sklearn.metrics import confusion_matrix
+
+
 hm_epochs = 40
 n_classes = traindata.num_classes
 batch_size = 128
 chunk_size = traindata.max_len #30
-n_chunks = 129 #28
+feature_dim = 130 #28
 rnn_size = 512
 n_hidden = rnn_size
 
@@ -73,7 +80,7 @@ def get_batch(X, X_, size):
     a = np.random.choice(len(X), size, replace=False)
     return X[a], X_[a]
 
-
+'''
 class StackedAutoEncoder:
     """A deep autoencoder with denoising capability"""
 
@@ -211,7 +218,7 @@ class StackedAutoEncoder:
             return tf.nn.tanh(linear, name='encoded')
         elif name == 'relu':
             return tf.nn.relu(linear, name='encoded')
-
+'''
 
 # In[85]:
 
@@ -230,6 +237,7 @@ clean_X = traindata.cleandata
 #noisy_X = np.reshape(traindata.noisydata,(-1,129,1))
 #clean_X = np.reshape(traindata.cleandata,(-1,129,1))
 
+'''
 model = StackedAutoEncoder(dims=[96, 64, 32], activations=['relu', 'relu', 'relu'], epoch=[
                            300, 300, 300], loss='rmse', lr=0.007, batch_size=128, print_step=100)
 model.fit(noisy_X, clean_X)
@@ -239,20 +247,21 @@ model.fit(noisy_X, clean_X)
 
 model.weights[1].shape
 
-
 # In[86]:
 
 #est_X = np.reshape(evaldata.noisydata,(-1,129,1))
-#rint (test_X[0,:,:])
-test_X = evaldata.noisydata[0:129:]
+test_X = np.reshape(evaldata.noisydata,(-1,130,1))
+print (test_X[0,:,:])
 test_X_ = model.transform(test_X)
+
+'''
 
 
 # In[59]:
 
 
 
-x = tf.placeholder('float', [None, n_chunks, chunk_size])
+x = tf.placeholder('float', [None, feature_dim, chunk_size])
 y = tf.placeholder('float')
 
 def recurrent_neural_network(x, keep_prob):
@@ -261,7 +270,7 @@ def recurrent_neural_network(x, keep_prob):
 
     x = tf.transpose(x, [1,0,2])
     x = tf.reshape(x, [-1, chunk_size])
-    x = tf.split(0, n_chunks, x)
+    x = tf.split(0, feature_dim, x)
 
     #GRU
 
@@ -345,8 +354,8 @@ def train_neural_network(x):
             for i in range(int(traindata.num_examples/batch_size)):
                 epoch_x, epoch_y, batch_len = traindata.next_batch(batch_size)
                 #print (epoch_x.shape)
-                #print ((batch_size,n_chunks,chunk_size))
-                epoch_x = epoch_x.reshape((batch_size,n_chunks,batch_len))
+                #print ((batch_size,feature_dim,chunk_size))
+                epoch_x = epoch_x.reshape((batch_size,feature_dim,batch_len))
 
                 _, c = sess.run([optimizer, cost], feed_dict={x: epoch_x, y: epoch_y, keep_prob: dropoutval})
                 epoch_loss += c
@@ -355,19 +364,19 @@ def train_neural_network(x):
             print("")
             print('Epoch', epoch, 'completed out of',hm_epochs,'loss:',epoch_loss)
 
-            #print('Train accuracy:',accuracy.eval({x:train_x.reshape((-1, n_chunks, chunk_size)), y:train_y, keep_prob:1.0}))         
-            print('Eval accuracy:',accuracy.eval({x:eval_x.reshape((-1, n_chunks, eval_len)), y:eval_y, keep_prob:1.0}))         
+            #print('Train accuracy:',accuracy.eval({x:train_x.reshape((-1, feature_dim, chunk_size)), y:train_y, keep_prob:1.0}))         
+            print('Eval accuracy:',accuracy.eval({x:eval_x.reshape((-1, feature_dim, eval_len)), y:eval_y, keep_prob:1.0}))         
 
         y_p = tf.argmax( prediction, 1)
-        val_accuracy, y_pred = sess.run([accuracy, y_p], feed_dict={x:eval_x.reshape((-1, n_chunks, chunk_size)), y:eval_y, keep_prob:1.0})
-        #val_accuracy, y_pred = sess.run([accuracy, y_p], feed_dict={x:train_x.reshape((-1, n_chunks, chunk_size)), y:train_y, keep_prob:1.0})
+        val_accuracy, y_pred = sess.run([accuracy, y_p], feed_dict={x:eval_x.reshape((-1, feature_dim, chunk_size)), y:eval_y, keep_prob:1.0})
+        #val_accuracy, y_pred = sess.run([accuracy, y_p], feed_dict={x:train_x.reshape((-1, feature_dim, chunk_size)), y:train_y, keep_prob:1.0})
         #y_true = np.argmax( eval_y ,1)
         y_true = np.argmax( train_y ,1)
         print ("confusion_matrix in /tmp/tf.training.confusion_matrix")
         np.savetxt('/tmp/tf.training.confusion_matrix',confusion_matrix(y_true, y_pred), "%i")                 
         #print ("Accuracy: ",accuracy)
        
-        #print('Accuracy:',accuracy.eval({x:mnist.test.images.reshape((-1, n_chunks, chunk_size)), y:mnist.test.labels}))
+        #print('Accuracy:',accuracy.eval({x:mnist.test.images.reshape((-1, feature_dim, chunk_size)), y:mnist.test.labels}))
 
 
 

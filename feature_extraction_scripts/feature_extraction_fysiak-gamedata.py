@@ -30,6 +30,9 @@ import time
 import sys
 import struct
 import random
+#import subprocess
+import glob
+
 
 from dnnutil import preprocessing
 #from dnnutil import get_labelstring
@@ -90,43 +93,40 @@ class extract_config:
     corpus = ""
     pickle_dir=''
     statistics_dir = ''
-
-
+    
+    lastframeindex = 0
+    extraframes = 4
     
 
     def __init__(self):
         dummy=1
     
-debug=True
 
 
 
 
-# In[452]:
+
 
 conf = extract_config()
 
+conf.preprocessing_options = ['none']
 
+conf.preprocessing_scripts = {'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] }}
 
-conf.preprocessing_scripts = {'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
-                              'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
-                              'overdrive' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_overdrive.sh', 'name' : 'overdrive', 'parameters': [[1,10], [-20,0]] },
-                              'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-50,-35],[-10,0]] },
-                              'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-40,-30],[-10,0]] } }
-
-#feature_extraction_script = '../feature_extraction_scripts/extract_5500hz_spec_with_start_end.sh'
-conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_mspec66_with_start_end.sh'
-conf.featuretype = "mspec66_and_f0"
+conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_mspec66_with_start_end_more_smoothing.sh'
+conf.featuretype = "mspec66_and_f0_alldata"
 
 conf.quality_control_wavdir = ""
 conf.statistics_handle = ""
 
-# In[453]:
+
+
+
 
 
 conf.vowels = ['a','A','å','Å','ä','Ä','e','E','f','i','I','o','O','ö','u','U']
-
 conf.nonvow = ['b','C','d','D','g','H','j','J','k','l','m','n','N','p','P','Q','r','R','s','S','t','T','v','w','W','Y','z','Z']
+
 
 conf.combinations = []
 
@@ -158,6 +158,9 @@ conf.max_num_classes = 10000
 
 conf.feature_dimension=66#130
 
+conf.extraframes = 5
+
+
 '''
 # For 8 kHz samples:
 '''
@@ -187,7 +190,7 @@ conf.tmpfilecounter = 0
 # tmp directory for feature extraction.
 # This should reside in memory (tempfs or whatever it's called, often under /dev/shm/)
 
-conf.tmp_dir="/dev/shm/siak-feat-extract-python-"+str(time.time())
+conf.tmp_dir="/dev/shm/siak-feat-extract-pfs-python-"+str(time.time())
 try:
     os.makedirs(conf.tmp_dir)
 except OSError as exc:  # Python >2.5
@@ -205,8 +208,11 @@ print ('using tmp dir %s' % conf.tmp_dir)
 
 # In[454]:
 
+conf.labeltype = "pfstar"
+
+
 conf.class_def = {
-"sil" : {"count" : 6611, "probability" :0.04628649220995, "sqrt_probability" :0.2151429576118, "class" :45},
+#"sil" : {"count" : 6611, "probability" :0.04628649220995, "sqrt_probability" :0.2151429576118, "class" :45},
 "P" : {"count" : 306, "probability" :1, "sqrt_probability" :1, "class" :44},
 "Z" : {"count" : 311, "probability" :0.98392282958199, "sqrt_probability" :0.99192884300336, "class" :43},
 "Å" : {"count" : 344, "probability" :0.88953488372093, "sqrt_probability" :0.94315156985552, "class" :42},
@@ -265,77 +271,69 @@ conf.class_def = {
 #
 
 
-conf.corpus = "en_uk_kids_align_from_clean"
+conf.corpus = "fysiak-gamedata-2"
 conf.pickle_dir='../features/work_in_progress/'+conf.corpus+'/pickles'
 conf.statistics_dir = '../features/work_in_progress/'+conf.corpus+'/statistics/'
 
-collections = [          
-    { 'name' : 'train-0',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00',
-      'condition' : 'clean',
-      'numlines': 878 },
-    { 'name' : 'train-1',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01',
-      'condition' : 'clean',
-      'numlines': 1083 },
-    { 'name' : 'train-2',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02',
-      'condition' : 'clean',
-      'numlines': 946 },
-    { 'name' : 'train-3',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03',
-      'condition' : 'clean',
-      'numlines': 870 },
-    { 'name' : 'train-4',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.04',
-      'condition' : 'clean',
-      'numlines': 651 },
-    { 'name' : 'train-5',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.05',
-      'condition' : 'clean',
-      'numlines': 785},
-    { 'name' : 'train-6',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.06',
-      'condition' : 'clean',
-      'numlines': 699 },
-    { 'name' : 'train-7',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.07',
-      'condition' : 'clean',
-      'numlines': 699 },
-    { 'name' : 'test-0',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00',
-      'condition' : 'clean',
-      'numlines': 852 },
-    { 'name' : 'test-1',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.01',
-      'condition' : 'clean',
-      'numlines': 752 },
-    { 'name' : 'test-2',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.02',
-      'condition' : 'clean',
-      'numlines': 594 },
-    { 'name' : 'test-3',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.03',
-      'condition' : 'clean',
-      'numlines': 758 },
-    { 'name' : 'test-4',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.04',
-      'condition' : 'clean',
-      'numlines': 734 },
-    { 'name' : 'eval-1',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.05',
-      'condition' : 'clean',
-      'numlines': 393},
-    { 'name' : 'eval-0',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00',
-      'condition' : 'clean',
-      'numlines': 837 }
-]
 
 
+# Do the align with:
+#
+# bash 03b-produce-alignments_batch.sh
+#
+aligndir='/teamwork/t40511_asr/c/siak/fysiak_game_data/align_siak_clean_c/'
 
+collections=[]
+currdir=os.getcwd()
+
+# Produce file lists:
+for dataclass in [ "disqualified", "lots_of_stars",  "native_or_nativelike",  "some_stars" ]:
+    #bashCommand = 'find /teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass + '/ -name "*.wav"'
+    
+    #process = subprocess.Popen(bashCommand.split(' '), stdout=subprocess.PIPE)
+    #output, error = process.communicate()
+    #print (error)
+    #print (output)
+
+    recipefilename = conf.tmp_dir + '/' + dataclass + '-32smoothed.recipe'
+    recipefilehandle = open(recipefilename, 'w')
+    audiobasedir='/teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass
+    os.chdir(audiobasedir)
+    #for wav in output:
+    wavcount=0
+    for wav in glob.glob("**/*.wav", recursive=True):
+        wav = wav.strip()
+        wavbase = os.path.basename(wav)[:-4]+'.phn'        
+        recipefilehandle.write ("audio=%s/%s transcript=%s age=?\n" % (audiobasedir,wav, aligndir+wavbase ))        
+        wavcount+=1
+        #sys.stderr.write("\r%i" % wavcount)
+        #sys.stderr.flush()
+    print("Found %i utterances to %s" % (wavcount, recipefilename))
+
+    collections.append( { "name" : dataclass+"-32smoothed",
+                          "recipe" : recipefilename,
+                          "numlines" : wavcount,
+                          "condition" : "mixed", 
+                          "training" : False} )
+
+os.chdir(currdir)
+
+#conf.debug=True
+
+numcores=1
+batchid=0
+
+
+if len(sys.argv)>2:
+    numcores=int(sys.argv[1])
+    batchid=int(sys.argv[2])
+
+
+counter=1
 for collection in collections:
-    extract_collection_and_save(conf, collection)
-
+    print("counter %i %s numcores %i == batchid %i?" % ( counter, "%s", numcores, batchid ) )
+    if (counter%numcores) == batchid:
+        extract_collection_and_save(conf, collection, training=False)
+    counter +=1
 
 

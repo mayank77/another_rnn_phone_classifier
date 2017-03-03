@@ -90,33 +90,34 @@ class extract_config:
     corpus = ""
     pickle_dir=''
     statistics_dir = ''
-
-
+    
+    lastframeindex = 0
+    extraframes = 4
     
 
     def __init__(self):
         dummy=1
     
-debug=True
 
 
 
 
-# In[452]:
+
 
 conf = extract_config()
 
+conf.preprocessing_options = ['overdrive', 'none']
 
 
-conf.preprocessing_scripts = {'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
+conf.preprocessing_scripts = {#'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
                               'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
                               'overdrive' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_overdrive.sh', 'name' : 'overdrive', 'parameters': [[1,10], [-20,0]] },
-                              'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-50,-35],[-10,0]] },
-                              'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-40,-30],[-10,0]] } }
+                              'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-40,-25],[-10,0]] },
+                              'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-20,-10],[-10,0]] } }
 
 #feature_extraction_script = '../feature_extraction_scripts/extract_5500hz_spec_with_start_end.sh'
 conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_mspec66_with_start_end.sh'
-conf.featuretype = "mspec66_and_f0"
+conf.featuretype = "mspec66_and_f0_alldata"
 
 conf.quality_control_wavdir = ""
 conf.statistics_handle = ""
@@ -158,6 +159,9 @@ conf.max_num_classes = 10000
 
 conf.feature_dimension=66#130
 
+conf.extraframes = 5
+
+
 '''
 # For 8 kHz samples:
 '''
@@ -187,7 +191,7 @@ conf.tmpfilecounter = 0
 # tmp directory for feature extraction.
 # This should reside in memory (tempfs or whatever it's called, often under /dev/shm/)
 
-conf.tmp_dir="/dev/shm/siak-feat-extract-python-"+str(time.time())
+conf.tmp_dir="/dev/shm/siak-feat-extract-pfs-python-"+str(time.time())
 try:
     os.makedirs(conf.tmp_dir)
 except OSError as exc:  # Python >2.5
@@ -204,6 +208,9 @@ print ('using tmp dir %s' % conf.tmp_dir)
 # 
 
 # In[454]:
+
+conf.labeltype = "aaltolike-stateless"
+
 
 conf.class_def = {
 "sil" : {"count" : 6611, "probability" :0.04628649220995, "sqrt_probability" :0.2151429576118, "class" :45},
@@ -265,77 +272,113 @@ conf.class_def = {
 #
 
 
-conf.corpus = "en_uk_kids_align_from_clean"
+conf.corpus = "en_uk_atr_kids_kaldi-align-2"
 conf.pickle_dir='../features/work_in_progress/'+conf.corpus+'/pickles'
 conf.statistics_dir = '../features/work_in_progress/'+conf.corpus+'/statistics/'
 
-collections = [          
-    { 'name' : 'train-0',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.00',
-      'condition' : 'clean',
-      'numlines': 878 },
-    { 'name' : 'train-1',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.01',
-      'condition' : 'clean',
-      'numlines': 1083 },
-    { 'name' : 'train-2',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.02',
-      'condition' : 'clean',
-      'numlines': 946 },
-    { 'name' : 'train-3',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.03',
-      'condition' : 'clean',
-      'numlines': 870 },
-    { 'name' : 'train-4',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.04',
-      'condition' : 'clean',
-      'numlines': 651 },
-    { 'name' : 'train-5',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.05',
-      'condition' : 'clean',
-      'numlines': 785},
-    { 'name' : 'train-6',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.06',
-      'condition' : 'clean',
-      'numlines': 699 },
-    { 'name' : 'train-7',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.train.07',
-      'condition' : 'clean',
-      'numlines': 699 },
-    { 'name' : 'test-0',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.00',
-      'condition' : 'clean',
-      'numlines': 852 },
-    { 'name' : 'test-1',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.01',
-      'condition' : 'clean',
-      'numlines': 752 },
-    { 'name' : 'test-2',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.02',
-      'condition' : 'clean',
-      'numlines': 594 },
-    { 'name' : 'test-3',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.03',
-      'condition' : 'clean',
-      'numlines': 758 },
-    { 'name' : 'test-4',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.04',
-      'condition' : 'clean',
-      'numlines': 734 },
-    { 'name' : 'eval-1',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.test.05',
-      'condition' : 'clean',
-      'numlines': 393},
-    { 'name' : 'eval-0',
-      'recipe' : '/l/rkarhila/speecon_wsj_phoneme_dnn/kids_en_uk/leave_one_out_recipes/aged_recipe.speakers.eval.00',
-      'condition' : 'clean',
-      'numlines': 837 }
+collections = [    
+{ "name" : "Participant10",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant10.recipe", "numlines": 29, "condition" : "mixed", "training" : True },
+{ "name" : "Participant11",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant11.recipe", "numlines": 173, "condition" : "mixed", "training" : True },
+{ "name" : "Participant12",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant12.recipe", "numlines": 242, "condition" : "mixed", "training" : True },
+{ "name" : "Participant13",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant13.recipe", "numlines": 41, "condition" : "mixed", "training" : True },
+{ "name" : "Participant14",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant14.recipe", "numlines": 30, "condition" : "mixed", "training" : True },
+{ "name" : "Participant15",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant15.recipe", "numlines": 47, "condition" : "mixed", "training" : True },
+{ "name" : "Participant16",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant16.recipe", "numlines": 49, "condition" : "mixed", "training" : True },
+{ "name" : "Participant17",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant17.recipe", "numlines": 24, "condition" : "mixed", "training" : True },
+{ "name" : "Participant18",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant18.recipe", "numlines": 29, "condition" : "mixed", "training" : True },
+{ "name" : "Participant19",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant19.recipe", "numlines": 46, "condition" : "mixed", "training" : True },
+{ "name" : "Participant1",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant1.recipe", "numlines": 17, "condition" : "mixed", "training" : True },
+{ "name" : "Participant20",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant20.recipe", "numlines": 63, "condition" : "mixed", "training" : True },
+{ "name" : "Participant21",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant21.recipe", "numlines": 54, "condition" : "mixed", "training" : True },
+{ "name" : "Participant22",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant22.recipe", "numlines": 50, "condition" : "mixed", "training" : True },
+{ "name" : "Participant23",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant23.recipe", "numlines": 14, "condition" : "mixed", "training" : True },
+{ "name" : "Participant24",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant24.recipe", "numlines": 39, "condition" : "mixed", "training" : True },
+{ "name" : "Participant25",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant25.recipe", "numlines": 17, "condition" : "mixed", "training" : True },
+{ "name" : "Participant26",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant26.recipe", "numlines": 35, "condition" : "mixed", "training" : True },
+{ "name" : "Participant27",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant27.recipe", "numlines": 26, "condition" : "mixed", "training" : True },
+{ "name" : "Participant28",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant28.recipe", "numlines": 35, "condition" : "mixed", "training" : True },
+{ "name" : "Participant29",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant29.recipe", "numlines": 31, "condition" : "mixed", "training" : True },
+{ "name" : "Participant30",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant30.recipe", "numlines": 69, "condition" : "mixed", "training" : True },
+{ "name" : "Participant31",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant31.recipe", "numlines": 5, "condition" : "mixed", "training" : True },
+{ "name" : "Participant32",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant32.recipe", "numlines": 37, "condition" : "mixed", "training" : True },
+{ "name" : "Participant33",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant33.recipe", "numlines": 15, "condition" : "mixed", "training" : True },
+{ "name" : "Participant34",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant34.recipe", "numlines": 33, "condition" : "mixed", "training" : True },
+{ "name" : "Participant35",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant35.recipe", "numlines": 43, "condition" : "mixed", "training" : True },
+{ "name" : "Participant36",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant36.recipe", "numlines": 27, "condition" : "mixed", "training" : True },
+{ "name" : "Participant37",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant37.recipe", "numlines": 7, "condition" : "mixed", "training" : True },
+{ "name" : "Participant38",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant38.recipe", "numlines": 121, "condition" : "mixed", "training" : True },
+{ "name" : "Participant39",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant39.recipe", "numlines": 22, "condition" : "mixed", "training" : True },
+{ "name" : "Participant40",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant40.recipe", "numlines": 21, "condition" : "mixed", "training" : True },
+{ "name" : "Participant41",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant41.recipe", "numlines": 40, "condition" : "mixed", "training" : True },
+{ "name" : "Participant42",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant42.recipe", "numlines": 14, "condition" : "mixed", "training" : True },
+{ "name" : "Participant43",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant43.recipe", "numlines": 19, "condition" : "mixed", "training" : True },
+{ "name" : "Participant44",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant44.recipe", "numlines": 19, "condition" : "mixed", "training" : True },
+{ "name" : "Participant5",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant5.recipe", "numlines": 15, "condition" : "mixed", "training" : True },
+{ "name" : "Participant6",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant6.recipe", "numlines": 29, "condition" : "mixed", "training" : True },
+{ "name" : "Participant7",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant7.recipe", "numlines": 132, "condition" : "mixed", "training" : True },
+{ "name" : "Participant8",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant8.recipe", "numlines": 124, "condition" : "mixed", "training" : True },
+{ "name" : "Participant9",
+"recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant9.recipe", "numlines": 129, "condition" : "mixed", "training" : True }
 ]
 
 
 
-for collection in collections:
-    extract_collection_and_save(conf, collection)
+#conf.debug=True
 
+numcores=1
+batchid=0
+
+
+if len(sys.argv)>2:
+    numcores=int(sys.argv[1])
+    batchid=int(sys.argv[2])
+
+
+counter=1
+for collection in collections:
+    print("counter %i %s numcores %i == batchid %i?" % ( counter, "%s", numcores, batchid ) )
+    if (counter%numcores) == batchid:
+        extract_collection_and_save(conf, collection)
+    counter +=1
 
 
