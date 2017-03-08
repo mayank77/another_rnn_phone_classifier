@@ -220,7 +220,7 @@ class phone_stash:
 
         self.batch_counter += (batch_end-batch_start)
 
-        return [ batch_data, batch_classes, batch_size, batch_maxlen , batch_lens]
+        return [ batch_data, batch_classes, batch_size, batch_maxlen , batch_lens, keys]
 
 
     def get_eval_batch(self, samples_per_class, sequence_length=-1, test=False):
@@ -256,7 +256,7 @@ class phone_stash:
         batch_classes = np.zeros([batch_size, self.num_classes])
         batch_classes[ np.arange(batch_size), self.classes[keys]] = 1 
         
-        return [ batch_data, batch_classes, batch_size, batch_maxlen , batch_lens]
+        return [ batch_data, batch_classes, batch_size, batch_maxlen , batch_lens, keys]
 
 
 
@@ -332,7 +332,7 @@ class phone_stash:
 
         self.balanced_batch_counter += (batch_end-batch_start)
 
-        return [ batch_data, batch_classes, batch_size, batch_maxlen , batch_lens]
+        return [ batch_data, batch_classes, batch_size, batch_maxlen , batch_lens, keys]
 
 
 
