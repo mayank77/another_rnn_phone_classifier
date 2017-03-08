@@ -221,7 +221,7 @@ stops={}
 
 uttcounter = 0
 
-lsq_weights = np.loadtxt('/tmp/lsq_weights')
+lsq_weights = np.loadtxt('/tmp/lsq_weights_loose')
 
 for category in ['native','good', 'ok', 'bad' ]:
     

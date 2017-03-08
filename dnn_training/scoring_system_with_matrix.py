@@ -201,7 +201,7 @@ phone_pickles = { 'bad' : os.path.join(test_pickle_dir, 'disqualified-32smoothed
                   'good' : os.path.join(test_pickle_dir, 'lots_of_stars-32smoothed_mspec66_and_f0_alldata.pickle2'),
                   'native' : os.path.join(test_pickle_dir, 'native_or_nativelike-32smoothed_mspec66_and_f0_alldata.pickle2') }
 
-points_per_phone = { 'bad' : -1,
+points_per_phone = { 'bad' : -2,
                      'ok' : 2,
                      'good' : 5,
                      'native' : 5 }
@@ -308,68 +308,94 @@ def my_costfunc(x):
                         ,2 ))
     
 
-def my_least_squares_costfunc(x):
+all_samples = np.mod(np.arange(uttcounter), 10)
+lsq_weight_array=np.zeros([10,45*120])
+
+all_scores=[]
+
+for testround in range(10):
+    
+    train_samples = np.where(all_samples != testround)[0]
+    test_samples = np.where(all_samples == testround)[0]
+
+    leave_one_out_ranking_array = ranking_array[train_samples,:]
+    leave_one_out_score_array = score_array[train_samples]
+
+    def my_least_squares_costfunc(x):
         #return ((ranking_array * x.reshape([45,120])).sum(-1).sum(-1) - score_array.T).reshape([-1])
-        return ((ranking_array * x).sum(-1) - score_array.T).reshape([-1])
+        #return ((ranking_array * x).sum(-1) - score_array.T).reshape([-1])
+        sum= np.abs((leave_one_out_ranking_array * x).sum(-1) - leave_one_out_score_array.T).reshape([-1])
+        sum -= 1
+        sum[sum<0] = 0
+        return sum
 
 
-#weights = least_squares(ranking_array, score_array, bounds=bounds)
+    #weights = least_squares(ranking_array, score_array, bounds=bounds)
 
-initguess = 0.01*np.random.rand(45,120)
+    initguess = 0.01*np.random.rand(45,120)
 
-#print("initguess cost:")
-#print(my_costfunc(initguess))
+    #print("initguess cost:")
+    #print(my_costfunc(initguess))
 
 
-for i in range(45):        
-    #print("setting %i to random" % (i*numranks) )
-    initguess[ i, i ] = 1
+    for i in range(45):        
+        #print("setting %i to random" % (i*numranks) )
+        initguess[ i, i ] = 5
 
-initguess=initguess.reshape([-1])
+    initguess=initguess.reshape([-1])
 
-print("initguess least_sq_cost.shape:")
-print(my_least_squares_costfunc(initguess).shape)
+    #print("initguess least_sq_cost.shape:")
+    #print(my_least_squares_costfunc(initguess).shape)
 
+    lsq_bounds=[-1.99,9.99]
+    
+    endcondition=0.01
+    #lsq_weights={'x':initguess}
+    lsq_weights = optimize.least_squares(my_least_squares_costfunc, initguess, bounds=lsq_bounds, verbose=2, ftol=endcondition, xtol=endcondition)
+
+
+
+    #print(lsq_weights)
+
+    outf = open('/tmp/lsq_output_%i'%testround, 'wb')
+    # Pickle the list using the highest protocol available.
+    pickle.dump( lsq_weights , outf, protocol=pickle.HIGHEST_PROTOCOL)
+
+    np.savetxt('/tmp/lsq_weights_%i'%testround, lsq_weights['x'].reshape([45,120]))
+
+    lsq_weight_array[testround,:] = lsq_weights['x']
+
+    test_ranking_array = ranking_array[test_samples,:]
+    test_score_array = score_array[test_samples]
+    
+    scores={}
+
+    for category in ['good', 'ok', 'bad' ]:        
+        target_score =  points_per_phone[category]        
+        sub_test_samples = np.where(test_score_array == target_score)[0]        
+        scores[category]= (lsq_weights['x'] * test_ranking_array[sub_test_samples,:]).sum(-1)
         
-#print (initguess)
+        print("round %i samples: %s\tmean: %0.2f\tstd: %0.2f" % (testround,
+                                                                 category,
+                                                                 np.mean(scores[category]),
+                                                                 np.std(scores[category])))
 
 
-lsq_bounds=[-1,25]
-lsq_weights = optimize.least_squares(my_least_squares_costfunc, initguess, bounds=lsq_bounds, verbose=2, ftol=0.01, xtol=0.01)
+    all_scores.append(scores)
+    
 
-print(lsq_weights)
-                  
-outf = open('/tmp/lsq_output', 'wb')
-# Pickle the list using the highest protocol available.
-pickle.dump( lsq_weights , outf, protocol=pickle.HIGHEST_PROTOCOL)
-                
-np.savetxt('/tmp/lsq_weights', lsq_weights['x'].reshape([45,120]))
+mean_lsq_weights = np.mean(lsq_weight_array, axis=0)
 
 
-
-'''
-weights1 = optimize.fmin_bfgs(my_costfunc, initguess, disp=True)#, fprime=fprime)
-
-#print(weights1)
-
-weights2 = optimize.fmin_l_bfgs_b(my_costfunc, weights1, bounds=bounds, approx_grad=True, disp=2)#, fprime=fprime)
-
-print(weights2)
-
-print(weights2[0])
-
-
-use_indices = np.where( np.sum(ranking_array, axis=0) > 0  )[0]
-
-np.savetxt('/tmp/weights2', weights2)
-
-scores=( ranking_array *  weights2[0] ).sum(-1).sum(-1) 
-
-print("Scores:")
-print(scores)
-
-for category in ['good', 'ok', 'bad' ]:
-    print("%s: %i-%i" % (category, starts[category], stops[category] ))
-
-np.savetxt('/tmp/scores', scores)
-'''
+for category in ['good', 'ok', 'bad' ]:        
+    target_score =  points_per_phone[category]        
+    sub_test_samples = np.where(score_array == target_score)[0]        
+    scores[category]= (mean_lsq_weights * test_ranking_array).sum(-1)
+    
+    print("            All: %s\tmean: %02.f\tstd: %0.2f" % (
+                                                             category,
+                                                             np.mean(scores[category]),
+                                                             np.std(scores[category])))
+    
+    
+all_scores.append(scores)

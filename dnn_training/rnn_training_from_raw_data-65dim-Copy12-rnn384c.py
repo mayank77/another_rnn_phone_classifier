@@ -32,7 +32,7 @@ fi_pickle_dir='../features/work_in_progress/'+fi_corpus+'/pickles'
 test_corpus = "fysiak-gamedata-2"
 test_pickle_dir='../features/work_in_progress/'+test_corpus+'/pickles'
 
-logs_path = '/tmp/tensorflow_logs/copy12-rnn384-h'
+logs_path = '../models/rnn384-a'
 LOG_DIR=logs_path
 #
 # A function that will be useful:
