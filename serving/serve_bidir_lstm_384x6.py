@@ -24,16 +24,15 @@ debugging = True
 
 import time, datetime, sys
 import numpy as np
-import h5py
+#import h5py
 
 import pickle
 
 import numpy as np
 import pickle, os, random, math, sys
+
 import tensorflow as tf
 from tensorflow.python.ops import rnn, rnn_cell
-
-
 
 
 '''  1.  Define RNN '''
@@ -666,7 +665,7 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
 
 
 
-        print ( "Load normalisation stats fom h5py..." )
+        print ( "Load normalisation stats..." )
         
         zmean = np.loadtxt( meanfile ) #traindata.mean
         zstd = np.loadtxt( stdfile )# traindata.std
@@ -675,6 +674,14 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
 
         loadtime = time.clock()-loadstartmoment
         print ("Loading took %0.1f seconds!"%loadtime)
+
+
+        # Connection handling! #
+        # Get data from socket and do it!
+        
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((HOST, 0))
+        s.listen(1)
 
         
         port = s.getsockname()[1]
@@ -857,9 +864,9 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
 if __name__ == '__main__':
 
     portfilename=sys.argv[1]
-    model_arch=sys.argv[2]
-    model_weights=sys.argv[3]
-    model_norm = sys.argv[4]
+    modelfile=sys.argv[2]
+    mean=sys.argv[3]
+    std = sys.argv[4]
     lsq =  sys.argv[5]
 
     run_server_loop(portfilename, modelfile, mean, std, lsq)
