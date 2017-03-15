@@ -31,7 +31,7 @@ import sys
 import struct
 import random
 
-from dnnutil import preprocessing
+from dnnutil import preprocessingwithoutnoise as preprocessing
 #from dnnutil import get_labelstring
 #from dnnutil import chop_features
 #from dnnutil import get_features
@@ -110,13 +110,14 @@ conf = extract_config()
 
 conf.preprocessing_scripts = {#'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
                               'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
-                              'overdrive' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_overdrive.sh', 'name' : 'overdrive', 'parameters': [[1,10], [-20,0]] },
-                              'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-40,-25],[-10,0]] },
-                              'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-20,-10],[-10,0]] } }
+                              #'overdrive' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_overdrive.sh', 'name' : 'overdrive', 'parameters': [[1,10], [-20,0]] },
+                              #'babble' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_babble.sh', 'name' : 'babbled', 'parameters': [[-40,-25],[-10,0]] },
+                              #'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-20,-10],[-10,0]] } 
+}
 
 #feature_extraction_script = '../feature_extraction_scripts/extract_5500hz_spec_with_start_end.sh'
-conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_mspec66_with_start_end.sh'
-conf.featuretype = "mspec66_and_f0_alldata"
+conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_melbin26_with_start_end.sh'
+conf.featuretype = "melbin26_and_f0_alldata"
 
 conf.quality_control_wavdir = ""
 conf.statistics_handle = ""
@@ -156,7 +157,7 @@ conf.max_num_samples=8000 # 0.5 should be enough for any reasonable phoneme, rig
 
 conf.max_num_classes = 10000
 
-conf.feature_dimension=66#130
+conf.feature_dimension=37#130
 
 conf.extraframes = 5
 

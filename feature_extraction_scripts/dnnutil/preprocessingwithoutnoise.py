@@ -126,7 +126,7 @@ def process_other_aaltoasrlike_label( conf, labelfile ):
                             new_align.append({#'pre' : phone['premodel'],
                                           'model' : phone['model'],
                                           #'post' : phone['postmodel'],
-                                          'start' : phone['start'],
+                                          'start' : max(phone['start'], (conf.extraframes +1) * conf.frame_step ),
                                           'end' : phone['end'],
                                           'triphone' : phone['triphone'],
                                           #'sortable': "%s--%s++%s" % (phone['model'] , phone['premodel'], phone['postmodel'])
@@ -144,7 +144,7 @@ def process_other_aaltoasrlike_label( conf, labelfile ):
                             new_align.append( {#'pre' : '?',
                                                'model' : 'sil',
                                                #'post' : '?',
-                                               'start' : max( conf.extraframes * conf.frame_step  , int(start),  int(end) - conf.frame_step * conf.max_num_frames),
+                                               'start' : max( (conf.extraframes  + 1) * conf.frame_step, int(start),  int(end) - conf.frame_step * conf.max_num_frames),
                                                'end' : int(end),
                                                'triphone' : 'sil'
                                                #'sortable': 'sil-?+?'
@@ -269,7 +269,7 @@ def process_pfstar_label( conf, labelfile ):
                             new_align.append({#'pre' : phone['premodel'],
                                           'model' : phone['model'],
                                           #'post' : phone['postmodel'],
-                                          'start' : phone['start'],
+                                          'start' : max( ((conf.extraframes +1) * conf.frame_step), phone['start']),
                                           'end' : phone['end'],
                                           'triphone' : phone['triphone'],
                                           #'sortable': "%s--%s++%s" % (phone['model'] , phone['premodel'], phone['postmodel'])
@@ -286,7 +286,7 @@ def process_pfstar_label( conf, labelfile ):
                             new_align.append( {#'pre' : '?',
                                                'model' : 'sil',
                                                #'post' : '?',
-                                               'start' : max( conf.extraframes * conf.frame_step  , int(start),  int(end) - conf.frame_step * conf.max_num_frames),
+                                               'start' : max( (conf.extraframes+1) * conf.frame_step , int(start),  int(end) - conf.frame_step * conf.max_num_frames),
                                                'end' : int(end),
                                                'triphone' : 'sil'
                                                #'sortable': 'sil-?+?'
@@ -319,8 +319,8 @@ def get_labelstring( new_align ):
 
 
 
-def chop_features( conf, cleanaudiodata, noisyaudiodata, noisy_feature_array, clean_feature_array, new_align, speedup, preprocessor_string, 
-                   cleanphonedata, noisyphonedata, phoneclasses, phone_indices, segment_details, segment_lengths, quality_control_audio_files, startbyte ):
+def chop_features( conf, cleanaudiodata, clean_feature_array, new_align, speedup, preprocessor_string, 
+                   cleanphonedata, phoneclasses, phone_indices, segment_details, segment_lengths, quality_control_audio_files, startbyte ):
     
     count = 0
     startmark =  0 #startbyte#int(math.ceil(float(new_align[0]['start'])*(conf.feature_fs/conf.audio_fs)/speedup))
@@ -330,8 +330,6 @@ def chop_features( conf, cleanaudiodata, noisyaudiodata, noisy_feature_array, cl
 
     # Get first and last frames:
 
-    #start_index = np.count_nonzero(sum(abs(noisyphonedata),1)) # Use a row sum to count zeros: Not very efficient, but that's what we have now.
-    #end_index = start_index + f_end - f_start
 
 
     # Then list the models that we have just copied, using overlapping indexing:
@@ -381,39 +379,8 @@ def chop_features( conf, cleanaudiodata, noisyaudiodata, noisy_feature_array, cl
             
             if conf.debug:
                 print("framestart: %i end: %i framedata len: %i" %(l_start, l_end, l_end-l_start))
-                print(" bytestart: %i end: %i audiodata len: %i" %(audio_start, audio_end, len(noisyaudiodata)))
+                print(" bytestart: %i end: %i audiodata len: %i" %(audio_start, audio_end, len(cleanaudiodata)))
                 print(" limits like in original labels: %i %i" % ( l_start * conf.frame_step + startbyte , l_end * conf.frame_step + startbyte ) )
-            '''                
-            if audio_end > len(noisyaudiodata):
-                raise ValueError("Can't access %i:%i in audiofile of length %i (%s)"% 
-                                 ( audio_start, audio_end , len(noisyaudiodata), preprocessor_string )) 
-
-
-            norm=20000.0/max(abs(noisyaudiodata[audio_start:audio_end]))
-
-            #
-            # Save the audio sample in the debug audio files (apply some windowing also)
-            # 
-
-            for val in noisyaudiodata[audio_start:audio_start+win_len]:
-                (quality_control_audio_files[mkey]).write( 
-                        struct.pack( 'h', int( max( -max_val, min( max_val,norm * val * win_i / win_len ) ) ) ) )
-                win_i+=1
-
-            for val in noisyaudiodata[audio_start+win_len:audio_end-win_len]:
-                (quality_control_audio_files[mkey]).write(
-                        struct.pack( 'h', int(max( -max_val, min(max_val,norm * val ) ) ) ) )
-
-            for val in noisyaudiodata[audio_end-win_len:audio_end]:
-                (quality_control_audio_files[mkey]).write(
-                        struct.pack( 'h', int(max( -max_val,min(max_val,norm * val * win_i / win_len ) ) ) )  )
-                win_i-=1
-
-            for val in range(0,1024):
-                (quality_control_audio_files[mkey]).write(
-                        struct.pack( 'h', 0 ) ) 
-            
-            '''
 
             if conf.debug:
                 print ("----------- "+l['triphone'] +" ----------------")
@@ -423,13 +390,13 @@ def chop_features( conf, cleanaudiodata, noisyaudiodata, noisy_feature_array, cl
                             l_length, 
                             int(l['end'])-startmark, 
                             l_end ))
-                print ("      phone data size: %i x %i" % (noisy_feature_array[l_start:l_end, :]).shape)
-                print ("Data size: %i x %i" % noisy_feature_array.shape)
+                print ("      phone data size: %i x %i" % (clean_feature_array[l_start:l_end, :]).shape)
+                print ("Data size: %i x %i" % clean_feature_array.shape)
 
 
 
-            if (noisy_feature_array.shape[0] < l_end):
-                print ("\nNot enough features: %i < %i (speed: %f)" % (noisy_feature_array.shape[0], l_end, speedup))
+            if (clean_feature_array.shape[0] < l_end):
+                print ("\nNot enough features: %i < %i (speed: %f)" % (clean_feature_array.shape[0], l_end, speedup))
                 return count
 
             conf.statistics_handle.write("%i\t%s\n" % (l_length, tp))
@@ -463,7 +430,8 @@ def chop_features( conf, cleanaudiodata, noisyaudiodata, noisy_feature_array, cl
             #                        'triphone' : l['triphone'],
             #                        'sorting' : l['sortable'] })
         else:
-            print ("%s not in model keys list!" % mkey)
+            #print ("%s not in model keys list!" % mkey)
+            dummy=1
     return count        
     #return { "data" : triphonedata, 
     #         "classes" : triphoneclasses, 
@@ -472,9 +440,11 @@ def chop_features( conf, cleanaudiodata, noisyaudiodata, noisy_feature_array, cl
 
 # ## Feature extraction (spectral/vocoder parameters) ##
 
-def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyphonedata, phoneclasses, phone_indices, 
+def get_features( conf, audiofile, align,  preprocessors, cleanphonedata,  phoneclasses, phone_indices, 
                   segment_details, segment_lengths, quality_control_audio_files, training=True):
     
+    preprocessor_string=""
+
     count = 0
     errors = []
     
@@ -496,7 +466,7 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
             print ("extra padding bytes: %i "  % (conf.extraframes * conf.frame_step))
             print ("Starting byte: %i - %i" % ((align[ 0]['start']) / speedup * conf.feature_fs /  16000, (conf.extraframes * conf.frame_step) ) )
 
-        startbyte = math. ceil( float( align[ 0]['start']) / speedup * conf.feature_fs /  16000) - (conf.extraframes * conf.frame_step)
+        startbyte = max(0, math. ceil( float( align[ 0]['start']) / speedup * conf.feature_fs /  16000) - (conf.extraframes * conf.frame_step))
         endbyte   = math. ceil( float( align[-1][  'end']) / speedup * conf.feature_fs / 16000) + (conf.extraframes * conf.frame_step)
 
         if conf.debug:
@@ -523,69 +493,20 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
         if len(new_align) > 0:
             
             preprocessor_key = preprocessors[random.randint( 0, len(preprocessors)-1 ) ]
-            
-            noisy_preprocessor = conf.preprocessing_scripts[preprocessor_key]
-                                                                    
-            noisy_preprocessed_audio=os.path.join(conf.tmp_dir,
-                                            str(conf.tmpfilecounter)+"_"+str(speedup)+"_preprocessed")
-
-            
+                       
             clean_preprocessor = conf.preprocessing_scripts['none']
 
             clean_preprocessed_audio = os.path.join(conf.tmp_dir,
                                             str(conf.tmpfilecounter)+"_"+str(speedup)+"_clean")
     
             if 1 == 1:
-                if conf.debug:
-                    print ("Preprocessor : %s" % noisy_preprocessor['name'])
-    
-                if noisy_preprocessor['parameters'][0][1] - noisy_preprocessor['parameters'][0][0] > 0:
-                    param1 = str(random.randint( noisy_preprocessor['parameters'][0][0],
-                                                 noisy_preprocessor['parameters'][0][1]) )
-                else:
-                    param1 = str(noisy_preprocessor['parameters'][0][0])
-    
 
-                if noisy_preprocessor['parameters'][1][1] - noisy_preprocessor['parameters'][1][0] > 0:                    
-                    param2 = str(random.randint( noisy_preprocessor['parameters'][1][0],
-                                                 noisy_preprocessor['parameters'][1][1]) )
-                else:
-                    param2 = str(noisy_preprocessor['parameters'][1][0])
-    
-                preprocessor_string = ("%s %s %s %.1f %s" % (preprocessor_key , param1, param2, speedup, audiofile))
-        
-                if conf.debug:                    
-                    print (' '.join([noisy_preprocessor['script'],
-                                     audiofile,
-                                     noisy_preprocessed_audio,
-                                     str(speedup),
-                                     param1,
-                                     param2
-                                 ]))
-
-                preprocess_progress = Popen([noisy_preprocessor['script'],
-                                             audiofile,
-                                             noisy_preprocessed_audio,
-                                             str(speedup),
-                                             param1,
-                                             param2
-                                        ], stdout=PIPE, stdin=PIPE, stderr=STDOUT).communicate()
-
-                
                 clean_preprocess_progress = Popen([clean_preprocessor['script'],
                                              audiofile,
                                              clean_preprocessed_audio,
-                                             str(speedup),
-                                             param1,
-                                             param2
+                                             str(speedup)
                                         ], stdout=PIPE, stdin=PIPE, stderr=STDOUT).communicate()
                 
-                try:
-                    noisy_audiodata = np.fromfile( noisy_preprocessed_audio, 'int16', -1)
-                except:
-                    print("\nPROBLEM!")
-                    print("Could not find noisydata features: %s" % noisy_preprocessed_audio )
-                    continue
 
                 try:
                     clean_audiodata = np.fromfile( clean_preprocessed_audio, 'int16', -1)
@@ -608,9 +529,6 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
                 # Communication from: 
                 # http://stackoverflow.com/questions/163542/python-how-do-i-pass-a-string-into-subprocess-popen-using-the-stdin-argument
 
-                noisy_tmp_input=os.path.join(conf.tmp_dir,str(conf.tmpfilecounter)+"_noisy_in")
-                noisy_tmp_output=os.path.join(conf.tmp_dir,str(conf.tmpfilecounter)+"_noisy_out")
-                noisy_audiodata.tofile(noisy_tmp_input, "")
 
                 clean_tmp_input=os.path.join(conf.tmp_dir,str(conf.tmpfilecounter)+"_clean_in")
                 clean_tmp_output=os.path.join(conf.tmp_dir,str(conf.tmpfilecounter)+"_clean_out")
@@ -619,20 +537,12 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
 
                 process_progress = Popen([
                         conf.feature_extraction_script, 
-                        noisy_tmp_input, 
-                        noisy_tmp_output, 
-                        str(startmark), 
-                        str(endmark+conf.frame_leftovers) #, '/tmp/test_noisy.wav'
-                ],  stdout=PIPE, stdin=PIPE, stderr=STDOUT).communicate()
-
-                process_progress = Popen([
-                        conf.feature_extraction_script, 
                         clean_tmp_input, 
                         clean_tmp_output, 
                         str(startmark), 
                         str(endmark+conf.frame_leftovers) # , '/tmp/test_clean.wav' 
                 ], stdout=PIPE, stdin=PIPE, stderr=STDOUT).communicate()
-
+                
 
                 # Read features from disk and copy all the features into our buffers:
 
@@ -641,30 +551,25 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
                 
                 
                 
-                noisy_feature_list = np.fromfile(noisy_tmp_output, dtype='float32', count=-1)
-                
-                
-                if conf.debug:
-                    print ("noisy_feature_list.shape")
-                    print (noisy_feature_list.shape)
-                try:
-                    noisy_feature_array = noisy_feature_list.reshape([-1,conf.feature_dimension])
-                    features_length_in_frames = noisy_feature_array.shape[0]
-                    
-                    
+                if True:
                     clean_feature_list = np.fromfile(clean_tmp_output, dtype='float32', count=-1)
-                    clean_feature_array = clean_feature_list.reshape([-1,conf.feature_dimension])
 
-                    features_length_in_frames = min(noisy_feature_array.shape[0], clean_feature_array.shape[0])
+                    try:
+                        clean_feature_array = clean_feature_list.reshape([-1,conf.feature_dimension])
+                    except:
+                        
+                        print(process_progress[0].decode('utf-8'))
 
-                except:
-                    print ("Feature extraction not going well for audiofile %s speedup %f condition %s" % (audiofile, speedup, preprocessor_key))
-                    print ("noisy_feature_list.shape")
-                    print (noisy_feature_list.shape)
+                        print("Not very compatible: %s" % audiofile)
+                        print("clean_feature_list.shape:")
+                        print(clean_feature_list.shape)
+                        print ("Apparently not divisible by %i" % conf.feature_dimension )
 
-                    continue
+                        sys.exit()
 
-                noisyphonedata[ conf.lastframeindex : conf.lastframeindex + features_length_in_frames, :] = noisy_feature_array[:features_length_in_frames,:]
+                    features_length_in_frames = clean_feature_array.shape[0]
+
+
                 cleanphonedata[ conf.lastframeindex : conf.lastframeindex + features_length_in_frames, :] = clean_feature_array[:features_length_in_frames,:]
                 
 
@@ -672,18 +577,8 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
                 f_end =  math.floor((endmark-startmark)/conf.frame_step)
 
                 if conf.debug:
-                    print ("Utterance data size: %i x %i" % (noisy_feature_array).shape)
+                    print ("Utterance data size: %i x %i" % (clean_feature_array).shape)
                 '''
-                if (noisy_feature_array.shape[0] < f_end / 16000 * conf.fs):
-                        print ("Not enough noisy features for file %s: %i < %i" % 
-                               (audiofile, noisy_feature_array.shape[0], f_end))
-                        #print ("panic save to /tmp/this_is_not_good")
-                        np.savetxt('/tmp/this_is_not_good', noisy_feature_array, delimiter='\t')
-
-                        #raise ValueError("Not enough features for file %s: %i < %i" % (
-                        #        audiofile, 
-                        #        noisy_feature_array.shape[0], 
-                        #        f_end) )
                         
                 if (clean_feature_array.shape[0] < f_end / 16000 * conf.fs):
                         print ("Not enough clean features for file %s: %i < %i" % 
@@ -701,14 +596,11 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
                     try: 
                         count += chop_features( conf,
                                                 clean_audiodata,
-                                                noisy_audiodata,
                                                 clean_feature_array,
-                                                noisy_feature_array, 
                                                 new_align, 
                                                 speedup,
                                                 preprocessor_string,
                                                 cleanphonedata, 
-                                                noisyphonedata,
                                                 phoneclasses, 
                                                 phone_indices,
                                                 segment_details,
@@ -729,10 +621,6 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
                 os.remove(clean_preprocessed_audio)
                 os.remove(clean_tmp_input)
                 os.remove(clean_tmp_output)
-                
-                os.remove(noisy_preprocessed_audio)
-                os.remove(noisy_tmp_input)
-                os.remove(noisy_tmp_output)
 
 
 
@@ -746,7 +634,6 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata, noisyp
 def extract_collection_and_save( conf, collection, training=True ):
 
     cleanphonedata = np.zeros([250000,conf.feature_dimension] ,dtype='float32')
-    noisyphonedata = np.zeros([250000,conf.feature_dimension] ,dtype='float32')
     phoneclasses = np.zeros([20000], dtype='uint8')
     phone_indices = np.zeros([20000,2], dtype='uint32')
     segment_lengths = np.zeros([20000], dtype='uint32')
@@ -787,10 +674,7 @@ def extract_collection_and_save( conf, collection, training=True ):
 
     for r in recipefile.readlines():
         
-        if conf.preprocessing_options:
-            preprocessors = conf.preprocessing_options #['overdrive','babble', 'humming'] # ['none','none','overdrive','babble', 'humming']
-        else:
-            preprocessors = ['overdrive','babble', 'humming'] # ['none','none','overdrive','babble', 'humming']
+        preprocessors = ['none']
         
         recipefilecounter += 1
         if conf.debug:
@@ -819,7 +703,6 @@ def extract_collection_and_save( conf, collection, training=True ):
                                              new_align, 
                                              preprocessors,
                                              cleanphonedata, 
-                                             noisyphonedata,
                                              phoneclasses, 
                                              phone_indices, 
                                              segment_details,
@@ -868,7 +751,6 @@ def extract_collection_and_save( conf, collection, training=True ):
     outf = open(picklefile, 'wb')
     # Pickle the list using the highest protocol available.
     pickle.dump( {  'cleandata': cleanphonedata[0:indexcount], 
-                    'noisydata': noisyphonedata[0:indexcount], 
                     'classes': phoneclasses[0:itemcount],
                     'indices' : phone_indices[0:itemcount,:],
                     'lengths' : segment_lengths[0:itemcount],

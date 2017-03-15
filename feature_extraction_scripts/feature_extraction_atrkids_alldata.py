@@ -31,7 +31,9 @@ import sys
 import struct
 import random
 
-from dnnutil import preprocessing
+
+from dnnutil import preprocessingwithoutnoise as preprocessing
+
 #from dnnutil import get_labelstring
 #from dnnutil import chop_features
 #from dnnutil import get_features
@@ -116,8 +118,8 @@ conf.preprocessing_scripts = {#'none' :{'script': '../feature_extraction_scripts
                               'humming' : {'script': '../feature_extraction_scripts/preprocess_pfstar_and_add_humming.sh', 'name' : 'volvo', 'parameters': [[-20,-10],[-10,0]] } }
 
 #feature_extraction_script = '../feature_extraction_scripts/extract_5500hz_spec_with_start_end.sh'
-conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_mspec66_with_start_end.sh'
-conf.featuretype = "mspec66_and_f0_alldata"
+conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_melbin26_with_start_end.sh'
+conf.featuretype = "melbin26_and_f0_alldata"
 
 conf.quality_control_wavdir = ""
 conf.statistics_handle = ""
@@ -157,7 +159,7 @@ conf.max_num_samples=8000 # 0.5 should be enough for any reasonable phoneme, rig
 
 conf.max_num_classes = 10000
 
-conf.feature_dimension=66#130
+conf.feature_dimension=37#130
 
 conf.extraframes = 5
 
@@ -291,6 +293,8 @@ collections = [
 "recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant15.recipe", "numlines": 47, "condition" : "mixed", "training" : True },
 { "name" : "Participant16",
 "recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant16.recipe", "numlines": 49, "condition" : "mixed", "training" : True },
+]
+collections = [    
 { "name" : "Participant17",
 "recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant17.recipe", "numlines": 24, "condition" : "mixed", "training" : True },
 { "name" : "Participant18",
@@ -309,6 +313,8 @@ collections = [
 "recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant23.recipe", "numlines": 14, "condition" : "mixed", "training" : True },
 { "name" : "Participant24",
 "recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant24.recipe", "numlines": 39, "condition" : "mixed", "training" : True },
+]
+collections = [   
 { "name" : "Participant25",
 "recipe" : "/l/rkarhila/atrkids_labels/recipes/Participant25.recipe", "numlines": 17, "condition" : "mixed", "training" : True },
 { "name" : "Participant26",
