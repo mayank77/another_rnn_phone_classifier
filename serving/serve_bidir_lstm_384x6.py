@@ -188,444 +188,453 @@ class_def = {
 }
 
 words = {
-    'finn': [ 'f', 'i', 'n'],
-    'june': [ 'J', 'u', 'n'],
-    'age': [ 'E', 'J'],
-    'air': [ 'W'],
-    'am': [ 'ä', 'm'],
-    'and': [ 'ä', 'n', 'd'],
-    'ant': [ 'ä', 'n', 't'],
-    'apple': [ 'ä', 'p', 'l'],
-    'arm': [ 'A', 'm'],
-    'art': [ 'A', 't'],
-    'at': [ 'ä', 't'],
-    'baby': [ 'b', 'E', 'b', 'I'],
-    'back': [ 'b', 'ä', 'k'],
-    'bad': [ 'b', 'ä', 'd'],
-    'bag': [ 'b', 'ä', 'g'],
-    'bake': [ 'b', 'E', 'k'],
-    'ball': [ 'b', 'O', 'l'],
-    'bark': [ 'b', 'A', 'k'],
-    'baseball': [ 'b', 'E', 's', 'b', 'O', 'l'],
-    'basketball': [ 'b', 'A', 's', 'k', 'i', 't', 'b', 'O', 'l'],
-    'bath': [ 'b', 'A', 'T'],
-    'be': [ 'b', 'I'],
-    'bear': [ 'b', 'W'],
-    'bed': [ 'b', 'e', 'd'],
-    'bedroom': [ 'b', 'e', 'd', 'r', 'u', 'm'],
-    'bee': [ 'b', 'I'],
-    'belt': [ 'b', 'e', 'l', 't'],
-    'berry': [ 'b', 'e', 'r', 'I'],
-    'best': [ 'b', 'e', 's', 't'],
-    'big': [ 'b', 'i', 'g'],
-    'bird': [ 'b', 'ö', 'd'],
-    'black': [ 'b', 'l', 'ä', 'k'],
-    'blue': [ 'b', 'l', 'u'],
-    'body': [ 'b', 'Y', 'd', 'I'],
-    'book': [ 'b', 'U', 'k'],
-    'boy': [ 'b', 'O', 'I'],
-    'bread': [ 'b', 'r', 'e', 'd'],
-    'breakfast': [ 'b', 'r', 'e', 'k', 'f', 'Q', 's', 't'],
-    'brother': [ 'b', 'r', 'a', 'D', 'Q'],
-    'brown': [ 'b', 'r', 'å', 'n'],
-    'bug': [ 'b', 'a', 'g'],
-    'bush': [ 'b', 'U', 'S'],
-    'butter': [ 'b', 'a', 't', 'Q'],
-    'butterfly': [ 'b', 'a', 't', 'Q', 'f', 'l', 'Ä'],
-    'buy': [ 'b', 'Ä'],
-    'bye': [ 'b', 'Ä'],
-    'bye_bye': [ 'b', 'Ä', 'b', 'Ä'],
-    'cake': [ 'k', 'E', 'k'],
-    'candy': [ 'k', 'ä', 'n', 'd', 'I'],
-    'cap': [ 'k', 'ä', 'p'],
-    'carpet': [ 'k', 'A', 'p', 'i', 't'],
-    'carrot': [ 'k', 'ä', 'r', 'Q', 't'],
-    'cat': [ 'k', 'ä', 't'],
-    'chair': [ 'C', 'W'],
-    'chat': [ 'C', 'ä', 't'],
-    'cheap': [ 'C', 'I', 'p'],
-    'cheek': [ 'C', 'I', 'k'],
-    'cheese': [ 'C', 'I', 'z'],
-    'cherry': [ 'C', 'e', 'r', 'I'],
-    'chew': [ 'C', 'u'],
-    'chick': [ 'C', 'i', 'k'],
-    'chicken': [ 'C', 'i', 'k', 'i', 'n'],
-    'child': [ 'C', 'Ä', 'l', 'd'],
-    'children': [ 'C', 'i', 'l', 'd', 'r', 'Q', 'n'],
-    'chin': [ 'C', 'i', 'n'],
-    'chip': [ 'C', 'i', 'p'],
-    'chocolate': [ 'C', 'Y', 'k', 'l', 'Q', 't'],
-    'choose': [ 'C', 'u', 'z'],
-    'city': [ 's', 'i', 't', 'I'],
-    'classmate': [ 'k', 'l', 'A', 's', 'm', 'E', 't'],
-    'close': [ 'k', 'l', 'o', 's'],
-    'clothe': [ 'k', 'l', 'o', 'D'],
-    'clothes': [ 'k', 'l', 'o', 'D', 'z'],
-    'coat': [ 'k', 'o', 't'],
-    'cold': [ 'k', 'o', 'l', 'd'],
-    'colour': [ 'k', 'a', 'l', 'Q'],
-    'come': [ 'k', 'a', 'm'],
-    'come_here': [ 'k', 'a', 'm', 'H', 'R'],
-    'come_on': [ 'k', 'a', 'm', 'Q', 'n'],
-    'cook': [ 'k', 'U', 'k'],
-    'cool': [ 'k', 'u', 'l'],
-    'country': [ 'k', 'a', 'n', 't', 'r', 'I'],
-    'cow': [ 'k', 'å'],
-    'cucumber': [ 'k', 'j', 'u', 'k', 'a', 'm', 'b', 'Q'],
-    'cup': [ 'k', 'a', 'p'],
-    'curl': [ 'k', 'ö', 'l'],
-    'cut': [ 'k', 'a', 't'],
-    'dark': [ 'd', 'A', 'k'],
-    'day': [ 'd', 'E'],
-    'deer': [ 'd', 'R'],
-    'dessert': [ 'd', 'i', 'z', 'ö', 't'],
-    'do': [ 'd', 'u'],
-    'do_you_want_to_play_with_us': [ 'd', 'u', 'j', 'Q', 'w', 'Y', 'n', 't', 't', 'Q', 'p', 'l', 'E', 'w', 'i', 'D', 'a', 's'],
-    'dog': [ 'd', 'Y', 'g'],
-    'dolphin': [ 'd', 'Y', 'l', 'f', 'i', 'n'],
-    'don_t': [ 'd', 'Y', 'n', 't', 'I'],
-    'door': [ 'd', 'O'],
-    'draw': [ 'd', 'r', 'O'],
-    'dream': [ 'd', 'r', 'I', 'm'],
-    'drink': [ 'd', 'r', 'i', 'N', 'k'],
-    'dry': [ 'd', 'r', 'Ä'],
-    'duck': [ 'd', 'a', 'k'],
-    'ear': [ 'R'],
-    'eat': [ 'e', 't'],
-    'eight': [ 'E', 't'],
-    'elbow': [ 'e', 'l', 'b', 'o'],
-    'elephant': [ 'e', 'l', 'i', 'f', 'Q', 'n', 't'],
-    'elk': [ 'e', 'l', 'k'],
-    'england': [ 'i', 'N', 'g', 'l', 'Q', 'n', 'd'],
-    'english': [ 'i', 'N', 'g', 'l', 'i', 'S'],
-    'europe': [ 'j', 'P', 'r', 'Q', 'p'],
-    'evening': [ 'I', 'v', 'n', 'i', 'N'],
-    'eye': [ 'Ä'],
-    'eyes': [ 'Ä', 'z'],
-    'face': [ 'f', 'E', 's'],
-    'fall': [ 'f', 'O', 'l'],
-    'family': [ 'f', 'ä', 'm', 'Q', 'l', 'I'],
-    'fan': [ 'f', 'ä', 'n'],
-    'farmer': [ 'f', 'A', 'm', 'Q'],
-    'fat': [ 'f', 'ä', 't'],
-    'father': [ 'f', 'A', 'D', 'Q'],
-    'feather': [ 'f', 'e', 'D', 'Q'],
-    'feel': [ 'f', 'I', 'l'],
-    'feet': [ 'f', 'I', 't'],
-    'field': [ 'f', 'I', 'l', 'd'],
-    'fin': [ 'f', 'i', 'n'],
-    'fine': [ 'f', 'Ä', 'n'],
-    'finger': [ 'f', 'i', 'N', 'g', 'Q'],
-    'finland': [ 'f', 'i', 'n', 'l', 'Q', 'n', 'd'],
-    'finn': [ 'f', 'i', 'n'],
-    'finnish': [ 'f', 'i', 'n', 'i', 'S'],
-    'first': [ 'f', 'ö', 's', 't'],
-    'fish': [ 'f', 'i', 'S'],
-    'fit': [ 'f', 'i', 't'],
-    'flower': [ 'f', 'l', 'å', 'Q'],
-    'food': [ 'f', 'u', 'd'],
-    'forest': [ 'f', 'Y', 'r', 'i', 's', 't'],
-    'fork': [ 'f', 'O', 'k'],
-    'fox': [ 'f', 'Y', 'k', 's'],
-    'friend': [ 'f', 'r', 'e', 'n', 'd'],
-    'full': [ 'f', 'U', 'l'],
-    'fun': [ 'f', 'a', 'n'],
-    'fur': [ 'f', 'ö'],
-    'game': [ 'g', 'E', 'm'],
-    'garage': [ 'g', 'ä', 'r', 'A', 'Z'],
-    'girl': [ 'g', 'ö', 'l'],
-    'glass': [ 'g', 'l', 'A', 's'],
-    'goal': [ 'g', 'o', 'l'],
-    'goat': [ 'g', 'o', 't'],
-    'gold': [ 'g', 'o', 'l', 'd'],
-    'good': [ 'g', 'U', 'd'],
-    'good_evening': [ 'g', 'U', 'd', 'I', 'v', 'n', 'i', 'N'],
-    'good_morning': [ 'g', 'U', 'd', 'm', 'O', 'n', 'i', 'N'],
-    'good_night': [ 'g', 'U', 'd', 'n', 'Ä', 't'],
-    'grass': [ 'g', 'r', 'A', 's'],
-    'green': [ 'g', 'r', 'I', 'n'],
-    'grey': [ 'g', 'r', 'E'],
-    'hair': [ 'H', 'W'],
-    'hairy': [ 'H', 'W', 'r', 'I'],
-    'hand': [ 'H', 'ä', 'n', 'd'],
-    'hard': [ 'H', 'A', 'd'],
-    'hare': [ 'H', 'W'],
-    'hat': [ 'H', 'ä', 't'],
-    'hay': [ 'H', 'E'],
-    'he_goes': [ 'H', 'I', 'g', 'o', 'z'],
-    'healthy': [ 'H', 'e', 'l', 'T', 'I'],
-    'hear': [ 'H', 'R'],
-    'heart': [ 'H', 'A', 't'],
-    'hello': [ 'H', 'Q', 'l', 'o'],
-    'hen': [ 'H', 'e', 'n'],
-    'here': [ 'H', 'R'],
-    'here_you_are': [ 'H', 'R', 'j', 'Q', 'A'],
-    'high': [ 'H', 'Ä'],
-    'home': [ 'H', 'o', 'm'],
-    'horse': [ 'H', 'O', 's'],
-    'house': [ 'H', 'å', 's'],
-    'hurry_up': [ 'H', 'a', 'r', 'I', 'a', 'p'],
-    'i_am': [ 'Ä', 'ä', 'm'],
-    'i_am_sorry': [ 'Ä', 'ä', 'm', 's', 'Y', 'r', 'I'],
-    'i_go': [ 'Ä', 'g', 'o'],
-    'i_like': [ 'Ä', 'l', 'Ä', 'k'],
-    'i_live_in_finland': [ 'Ä', 'l', 'i', 'v', 'i', 'n', 'f', 'i', 'n', 'l', 'Q', 'n', 'd'],
-    'i_speak_finnish': [ 'Ä', 's', 'p', 'I', 'k', 'f', 'i', 'n', 'i', 'S'],
-    'i_was': [ 'Ä', 'w', 'Q', 'z'],
-    'ice': [ 'Ä', 's'],
-    'ice_hockey': [ 'Ä', 's', 'H', 'Y', 'k', 'I'],
-    'ice_skating': [ 'Ä', 's', 's', 'k', 'E', 't', 'i', 'N'],
-    'it': [ 'i', 't'],
-    'jam': [ 'J', 'ä', 'm'],
-    'jaw': [ 'J', 'O'],
-    'jet': [ 'J', 'e', 't'],
-    'juice': [ 'J', 'u', 's'],
-    'jump': [ 'J', 'a', 'm', 'p'],
-    'june': [ 'J', 'u', 'n'],
-    'kitchen': [ 'k', 'i', 'C', 'i', 'n'],
-    'knee': [ 'n', 'I'],
-    'knife': [ 'n', 'Ä', 'f'],
-    'lake': [ 'l', 'E', 'k'],
-    'lamp': [ 'l', 'ä', 'm', 'p'],
-    'language': [ 'l', 'ä', 'N', 'g', 'w', 'i', 'J'],
-    'lead': [ 'l', 'e', 'd'],
-    'leaf': [ 'l', 'I', 'f'],
-    'learn': [ 'l', 'ö', 'n'],
-    'leave': [ 'l', 'I', 'v'],
-    'legs': [ 'l', 'e', 'g', 'z'],
-    'lemon': [ 'l', 'e', 'm', 'Q', 'n'],
-    'lets_go': [ 'l', 'e', 't', 's', 'g', 'o'],
-    'lick': [ 'l', 'i', 'k'],
-    'life': [ 'l', 'Ä', 'f'],
-    'light': [ 'l', 'Ä', 't'],
-    'lion': [ 'l', 'Ä', 'Q', 'n'],
-    'lips': [ 'l', 'i', 'p', 's'],
-    'listen': [ 'l', 'i', 's', 'n'],
-    'live': [ 'l', 'Ä', 'v'],
-    'living_room': [ 'l', 'i', 'v', 'i', 'N', 'r', 'u', 'm'],
-    'lock': [ 'l', 'Y', 'k'],
-    'log': [ 'l', 'Y', 'g'],
-    'long': [ 'l', 'Y', 'N'],
-    'look': [ 'l', 'U', 'k'],
-    'loud': [ 'l', 'å', 'd'],
-    'love': [ 'l', 'a', 'v'],
-    'low': [ 'l', 'o'],
-    'lunch': [ 'l', 'a', 'n', 'C'],
-    'make': [ 'm', 'E', 'k'],
-    'man': [ 'm', 'ä', 'n'],
-    'maths': [ 'm', 'ä', 'T', 's'],
-    'mats': [ 'm', 'ä', 't', 's'],
-    'meat': [ 'm', 'I', 't'],
-    'milk': [ 'm', 'i', 'l', 'k'],
-    'money': [ 'm', 'a', 'n', 'I'],
-    'monkey': [ 'm', 'a', 'N', 'k', 'I'],
-    'month': [ 'm', 'a', 'n', 'T'],
-    'moon': [ 'm', 'u', 'n'],
-    'moose': [ 'm', 'u', 's'],
-    'more': [ 'm', 'O'],
-    'morning': [ 'm', 'O', 'n', 'i', 'N'],
-    'mother': [ 'm', 'a', 'D', 'Q'],
-    'mouse': [ 'm', 'å', 's'],
-    'mouth': [ 'm', 'å', 'D'],
-    'move': [ 'm', 'u', 'v'],
-    'movie': [ 'm', 'u', 'v', 'I'],
-    'music': [ 'm', 'j', 'u', 'z', 'i', 'k'],
-    'my_name_is': [ 'm', 'Ä', 'n', 'E', 'm', 'i', 'z'],
-    'neck': [ 'n', 'e', 'k'],
-    'neighbour': [ 'n', 'E', 'b', 'Q'],
-    'nice_to_meet_you': [ 'n', 'Ä', 's', 't', 'Q', 'm', 'I', 't', 'j', 'Q'],
-    'night': [ 'n', 'Ä', 't'],
-    'no_thank_you': [ 'n', 'o', 'T', 'ä', 'N', 'k', 'j', 'Q'],
-    'north': [ 'n', 'O', 'T'],
-    'nose': [ 'n', 'o', 'z'],
-    'now': [ 'n', 'å'],
-    'of': [ 'Q', 'v'],
-    'off': [ 'O', 'f'],
-    'old': [ 'o', 'l', 'd'],
-    'once': [ 'w', 'a', 'n', 's'],
-    'one': [ 'w', 'a', 'n'],
-    'ones': [ 'w', 'a', 'n', 'z'],
-    'orange': [ 'Y', 'r', 'i', 'n', 'J'],
-    'owl': [ 'å', 'l'],
-    'pack': [ 'p', 'ä', 'k'],
-    'page': [ 'p', 'E', 'J'],
-    'paint': [ 'p', 'E', 'n', 't'],
-    'parents': [ 'p', 'W', 'r', 'Q', 'n', 't', 's'],
-    'park': [ 'p', 'A', 'k'],
-    'parrot': [ 'p', 'ä', 'r', 'Q', 't'],
-    'party': [ 'p', 'A', 't', 'I'],
-    'pays': [ 'p', 'E', 'z'],
-    'pea': [ 'p', 'I'],
-    'pear': [ 'p', 'W'],
-    'peas': [ 'p', 'I', 'z'],
-    'pepper': [ 'p', 'e', 'p', 'Q'],
-    'pet': [ 'p', 'e', 't'],
-    'phone': [ 'f', 'o', 'n'],
-    'pie': [ 'p', 'Ä'],
-    'piece': [ 'p', 'I', 's'],
-    'pig': [ 'p', 'i', 'g'],
-    'pink': [ 'p', 'i', 'N', 'k'],
-    'plant': [ 'p', 'l', 'A', 'n', 't'],
-    'plate': [ 'p', 'l', 'E', 't'],
-    'play': [ 'p', 'l', 'E'],
-    'please': [ 'p', 'l', 'I', 'z'],
-    'pool': [ 'p', 'u', 'l'],
-    'potato': [ 'p', 'Q', 't', 'E', 't', 'o'],
-    'pull': [ 'p', 'U', 'l'],
-    'purple': [ 'p', 'ö', 'p', 'l'],
-    'quiet': [ 'k', 'w', 'Ä', 'Q', 't'],
-    'rat': [ 'r', 'ä', 't'],
-    'read': [ 'r', 'e', 'd'],
-    'real': [ 'r', 'E', 'A', 'l'],
-    'red': [ 'r', 'e', 'd'],
-    'rest': [ 'r', 'e', 's', 't'],
-    'ride': [ 'r', 'Ä', 'd'],
-    'right': [ 'r', 'Ä', 't'],
-    'river': [ 'r', 'i', 'v', 'Q'],
-    'rock': [ 'r', 'Y', 'k'],
-    'room': [ 'r', 'u', 'm'],
-    'round': [ 'r', 'å', 'n', 'd'],
-    'run': [ 'r', 'a', 'n'],
-    'safe': [ 's', 'E', 'f'],
-    'salad': [ 's', 'ä', 'l', 'Q', 'd'],
-    'salt': [ 's', 'O', 'l', 't'],
-    'sand': [ 's', 'ä', 'n', 'd'],
-    'save': [ 's', 'E', 'v'],
-    'say': [ 's', 'E'],
-    'school': [ 's', 'k', 'u', 'l'],
-    'sea': [ 's', 'I'],
-    'seal': [ 's', 'I', 'l'],
-    'seat': [ 's', 'I', 't'],
-    'seed': [ 's', 'I', 'd'],
-    'sees': [ 's', 'I', 'z'],
-    'set': [ 's', 'e', 't'],
-    'she': [ 'S', 'I'],
-    'she_is': [ 'S', 'I', 'i', 'z'],
-    'she_likes': [ 'S', 'I', 'l', 'Ä', 'k', 's'],
-    'sheep': [ 'S', 'I', 'p'],
-    'sheet': [ 'S', 'I', 't'],
-    'shine': [ 'S', 'Ä', 'n'],
-    'ship': [ 'S', 'i', 'p'],
-    'shirt': [ 'S', 'ö', 't'],
-    'shoe': [ 'S', 'u'],
-    'shop': [ 'S', 'Y', 'p'],
-    'shoulder': [ 'S', 'o', 'l', 'd', 'Q'],
-    'shower': [ 'S', 'å', 'Q'],
-    'shows': [ 'S', 'o', 'z'],
-    'sing': [ 's', 'i', 'N'],
-    'sister': [ 's', 'i', 's', 't', 'Q'],
-    'sit': [ 's', 'i', 't'],
-    'ski': [ 's', 'k', 'I'],
-    'sleep': [ 's', 'l', 'I', 'p'],
-    'smell': [ 's', 'm', 'e', 'l'],
-    'snack': [ 's', 'n', 'ä', 'k'],
-    'snake': [ 's', 'n', 'E', 'k'],
-    'socks': [ 's', 'Y', 'k', 's'],
-    'soft': [ 's', 'Y', 'f', 't'],
-    'soon': [ 's', 'u', 'n'],
-    'sorry': [ 's', 'Y', 'r', 'I'],
-    'sound': [ 's', 'å', 'n', 'd'],
-    'soup': [ 's', 'u', 'p'],
-    'speak': [ 's', 'p', 'I', 'k'],
-    'spoon': [ 's', 'p', 'u', 'n'],
-    'squirrel': [ 's', 'k', 'w', 'i', 'r', 'Q', 'l'],
-    'strawberry': [ 's', 't', 'r', 'O', 'b', 'r', 'I'],
-    'sun': [ 's', 'a', 'n'],
-    'swedish': [ 's', 'w', 'I', 'd', 'i', 'S'],
-    'sweet': [ 's', 'w', 'I', 't'],
-    'swim': [ 's', 'w', 'i', 'm'],
-    'table': [ 't', 'A', 'b', 'l'],
-    'taste': [ 't', 'E', 's', 't'],
-    'teacher': [ 't', 'I', 'C', 'Q'],
-    'teas': [ 't', 'I', 'z'],
-    'teeth': [ 't', 'I', 'T'],
-    'ten': [ 't', 'e', 'n'],
-    'than': [ 'D', 'ä', 'n'],
-    'thank_you': [ 'T', 'ä', 'N', 'k', 'j', 'Q'],
-    'that': [ 'D', 'ä', 't'],
-    'the': [ 'D', 'Q'],
-    'theatre': [ 'T', 'R', 't', 'Q'],
-    'their': [ 'D', 'W'],
-    'then': [ 'D', 'e', 'n'],
-    'there': [ 'D', 'W'],
-    'these': [ 'D', 'I', 'z'],
-    'they': [ 'D', 'E'],
-    'thick': [ 'T', 'i', 'k'],
-    'thin': [ 'T', 'i', 'n'],
-    'thing': [ 'T', 'i', 'N'],
-    'think': [ 'T', 'i', 'N', 'k'],
-    'thirst': [ 'T', 'ö', 's', 't'],
-    'thirsty': [ 'T', 'ö', 's', 't', 'I'],
-    'this': [ 'D', 'i', 's'],
-    'those': [ 'D', 'o', 'z'],
-    'three': [ 'T', 'r', 'I'],
-    'throw': [ 'T', 'r', 'o'],
-    'time': [ 't', 'Ä', 'm'],
-    'toast': [ 't', 'o', 's', 't'],
-    'today': [ 't', 'Q', 'd', 'E'],
-    'toe': [ 't', 'o'],
-    'toilet': [ 't', 'Å', 'l', 'i', 't'],
-    'tomato': [ 't', 'Q', 'm', 'A', 't', 'o'],
-    'tomorrow': [ 't', 'Q', 'm', 'Y', 'r', 'o'],
-    'tongue': [ 't', 'a', 'N'],
-    'too': [ 't', 'u'],
-    'tortoise': [ 't', 'O', 't', 'Q', 's'],
-    'town': [ 't', 'å', 'n'],
-    'tree': [ 't', 'r', 'I'],
-    'two': [ 't', 'u'],
-    'use': [ 'j', 'u', 's'],
-    'van': [ 'v', 'ä', 'n'],
-    'vest': [ 'v', 'e', 's', 't'],
-    'vet': [ 'v', 'e', 't'],
-    'village': [ 'v', 'i', 'l', 'i', 'J'],
-    'walk': [ 'w', 'O', 'k'],
-    'wall': [ 'w', 'O', 'l'],
-    'want': [ 'w', 'Y', 'n', 't'],
-    'was': [ 'w', 'Q', 'z'],
-    'wash': [ 'w', 'Y', 'S'],
-    'watch': [ 'w', 'Y', 'C'],
-    'water': [ 'w', 'O', 't', 'Q'],
-    'we_go': [ 'w', 'I', 'g', 'o'],
-    'we_were': [ 'w', 'I', 'w', 'ö'],
-    'wear': [ 'w', 'W'],
-    'week': [ 'w', 'I', 'k'],
-    'well_done': [ 'w', 'e', 'l', 'd', 'a', 'n'],
-    'were': [ 'w', 'ö'],
-    'west': [ 'w', 'e', 's', 't'],
-    'wet': [ 'w', 'e', 't'],
-    'what': [ 'w', 'Y', 't'],
-    'wheel': [ 'w', 'I', 'l'],
-    'where': [ 'w', 'W'],
-    'which': [ 'w', 'i', 'C'],
-    'white': [ 'w', 'Ä', 't'],
-    'who': [ 'H', 'u'],
-    'why': [ 'w', 'Ä'],
-    'win': [ 'w', 'i', 'n'],
-    'window': [ 'w', 'i', 'n', 'd', 'o'],
-    'wish': [ 'w', 'i', 'S'],
-    'with': [ 'w', 'i', 'D'],
-    'woman': [ 'w', 'U', 'm', 'Q', 'n'],
-    'wool': [ 'w', 'U', 'l'],
-    'worm': [ 'w', 'ö', 'm'],
-    'would_you_like_some_juice': [ 'w', 'Q', 'd', 'j', 'Q', 'l', 'Ä', 'k', 's', 'a', 'm', 'J', 'u', 's'],
-    'would_you_like_some_more': [ 'w', 'Q', 'd', 'j', 'Q', 'l', 'Ä', 'k', 's', 'a', 'm', 'm', 'O'],
-    'write': [ 'r', 'Ä', 't'],
-    'wrong': [ 'r', 'Y', 'N'],
-    'year': [ 'j', 'ö'],
-    'yellow': [ 'j', 'e', 'l', 'o'],
-    'yes_please': [ 'j', 'e', 's', 'p', 'l', 'I', 'z'],
-    'yesterday': [ 'j', 'e', 's', 't', 'Q', 'd', 'E'],
-    'yet': [ 'j', 'e', 't'],
-    'you_are': [ 'j', 'Q', 'A'],
-    'you_go': [ 'j', 'Q', 'g', 'o'],
-    'you_re_welcome': [ 'j', 'Q', 'r', 'E', 'w', 'e', 'l', 'k', 'Q', 'm'],
-    'you_were': [ 'j', 'Q', 'w', 'ö'],
-    'young': [ 'j', 'a', 'N'],
-    'your': [ 'j', 'O'],
-    'zoo': [ 'z', 'u'],
-    'zoos': [ 'z', 'u', 'z']  }
+    u'finn': [ 'f', 'i', 'n'],
+    u'june': [ 'J', 'u', 'n'],
+    u'age': [ 'E', 'J'],
+    u'air': [ 'W'],
+    u'am': [ 'ä', 'm'],
+    u'and': [ 'ä', 'n', 'd'],
+    u'ant': [ 'ä', 'n', 't'],
+    u'apple': [ 'ä', 'p', 'l'],
+    u'arm': [ 'A', 'm'],
+    u'art': [ 'A', 't'],
+    u'at': [ 'ä', 't'],
+    u'baby': [ 'b', 'E', 'b', 'I'],
+    u'back': [ 'b', 'ä', 'k'],
+    u'bad': [ 'b', 'ä', 'd'],
+    u'bag': [ 'b', 'ä', 'g'],
+    u'bake': [ 'b', 'E', 'k'],
+    u'ball': [ 'b', 'O', 'l'],
+    u'bark': [ 'b', 'A', 'k'],
+    u'baseball': [ 'b', 'E', 's', 'b', 'O', 'l'],
+    u'basketball': [ 'b', 'A', 's', 'k', 'i', 't', 'b', 'O', 'l'],
+    u'bath': [ 'b', 'A', 'T'],
+    u'be': [ 'b', 'I'],
+    u'bear': [ 'b', 'W'],
+    u'bed': [ 'b', 'e', 'd'],
+    u'bedroom': [ 'b', 'e', 'd', 'r', 'u', 'm'],
+    u'bee': [ 'b', 'I'],
+    u'belt': [ 'b', 'e', 'l', 't'],
+    u'berry': [ 'b', 'e', 'r', 'I'],
+    u'best': [ 'b', 'e', 's', 't'],
+    u'big': [ 'b', 'i', 'g'],
+    u'bird': [ 'b', 'ö', 'd'],
+    u'black': [ 'b', 'l', 'ä', 'k'],
+    u'blue': [ 'b', 'l', 'u'],
+    u'body': [ 'b', 'Y', 'd', 'I'],
+    u'book': [ 'b', 'U', 'k'],
+    u'boy': [ 'b', 'O', 'I'],
+    u'bread': [ 'b', 'r', 'e', 'd'],
+    u'breakfast': [ 'b', 'r', 'e', 'k', 'f', 'Q', 's', 't'],
+    u'brother': [ 'b', 'r', 'a', 'D', 'Q'],
+    u'brown': [ 'b', 'r', 'å', 'n'],
+    u'bug': [ 'b', 'a', 'g'],
+    u'bush': [ 'b', 'U', 'S'],
+    u'butter': [ 'b', 'a', 't', 'Q'],
+    u'butterfly': [ 'b', 'a', 't', 'Q', 'f', 'l', 'Ä'],
+    u'buy': [ 'b', 'Ä'],
+    u'bye': [ 'b', 'Ä'],
+    u'bye_bye': [ 'b', 'Ä', 'b', 'Ä'],
+    u'cake': [ 'k', 'E', 'k'],
+    u'candy': [ 'k', 'ä', 'n', 'd', 'I'],
+    u'cap': [ 'k', 'ä', 'p'],
+    u'carpet': [ 'k', 'A', 'p', 'i', 't'],
+    u'carrot': [ 'k', 'ä', 'r', 'Q', 't'],
+    u'cat': [ 'k', 'ä', 't'],
+    u'chair': [ 'C', 'W'],
+    u'chat': [ 'C', 'ä', 't'],
+    u'cheap': [ 'C', 'I', 'p'],
+    u'cheek': [ 'C', 'I', 'k'],
+    u'cheese': [ 'C', 'I', 'z'],
+    u'cherry': [ 'C', 'e', 'r', 'I'],
+    u'chew': [ 'C', 'u'],
+    u'chick': [ 'C', 'i', 'k'],
+    u'chicken': [ 'C', 'i', 'k', 'i', 'n'],
+    u'child': [ 'C', 'Ä', 'l', 'd'],
+    u'children': [ 'C', 'i', 'l', 'd', 'r', 'Q', 'n'],
+    u'chin': [ 'C', 'i', 'n'],
+    u'chip': [ 'C', 'i', 'p'],
+    u'chocolate': [ 'C', 'Y', 'k', 'l', 'Q', 't'],
+    u'choose': [ 'C', 'u', 'z'],
+    u'city': [ 's', 'i', 't', 'I'],
+    u'classmate': [ 'k', 'l', 'A', 's', 'm', 'E', 't'],
+    u'close': [ 'k', 'l', 'o', 's'],
+    u'clothe': [ 'k', 'l', 'o', 'D'],
+    u'clothes': [ 'k', 'l', 'o', 'D', 'z'],
+    u'coat': [ 'k', 'o', 't'],
+    u'cold': [ 'k', 'o', 'l', 'd'],
+    u'colour': [ 'k', 'a', 'l', 'Q'],
+    u'come': [ 'k', 'a', 'm'],
+    u'come_here': [ 'k', 'a', 'm', 'H', 'R'],
+    u'come_on': [ 'k', 'a', 'm', 'Q', 'n'],
+    u'cook': [ 'k', 'U', 'k'],
+    u'cool': [ 'k', 'u', 'l'],
+    u'country': [ 'k', 'a', 'n', 't', 'r', 'I'],
+    u'cow': [ 'k', 'å'],
+    u'cucumber': [ 'k', 'j', 'u', 'k', 'a', 'm', 'b', 'Q'],
+    u'cup': [ 'k', 'a', 'p'],
+    u'curl': [ 'k', 'ö', 'l'],
+    u'cut': [ 'k', 'a', 't'],
+    u'dark': [ 'd', 'A', 'k'],
+    u'day': [ 'd', 'E'],
+    u'deer': [ 'd', 'R'],
+    u'dessert': [ 'd', 'i', 'z', 'ö', 't'],
+    u'do': [ 'd', 'u'],
+    u'do_you_want_to_play_with_us': [ 'd', 'u', 'j', 'Q', 'w', 'Y', 'n', 't', 't', 'Q', 'p', 'l', 'E', 'w', 'i', 'D', 'a', 's'],
+    u'dog': [ 'd', 'Y', 'g'],
+    u'dolphin': [ 'd', 'Y', 'l', 'f', 'i', 'n'],
+    u'don_t': [ 'd', 'Y', 'n', 't', 'I'],
+    u'door': [ 'd', 'O'],
+    u'draw': [ 'd', 'r', 'O'],
+    u'dream': [ 'd', 'r', 'I', 'm'],
+    u'drink': [ 'd', 'r', 'i', 'N', 'k'],
+    u'dry': [ 'd', 'r', 'Ä'],
+    u'duck': [ 'd', 'a', 'k'],
+    u'ear': [ 'R'],
+    u'eat': [ 'e', 't'],
+    u'eight': [ 'E', 't'],
+    u'elbow': [ 'e', 'l', 'b', 'o'],
+    u'elephant': [ 'e', 'l', 'i', 'f', 'Q', 'n', 't'],
+    u'elk': [ 'e', 'l', 'k'],
+    u'england': [ 'i', 'N', 'g', 'l', 'Q', 'n', 'd'],
+    u'english': [ 'i', 'N', 'g', 'l', 'i', 'S'],
+    u'europe': [ 'j', 'P', 'r', 'Q', 'p'],
+    u'evening': [ 'I', 'v', 'n', 'i', 'N'],
+    u'eye': [ 'Ä'],
+    u'eyes': [ 'Ä', 'z'],
+    u'face': [ 'f', 'E', 's'],
+    u'fall': [ 'f', 'O', 'l'],
+    u'family': [ 'f', 'ä', 'm', 'Q', 'l', 'I'],
+    u'fan': [ 'f', 'ä', 'n'],
+    u'farmer': [ 'f', 'A', 'm', 'Q'],
+    u'fat': [ 'f', 'ä', 't'],
+    u'father': [ 'f', 'A', 'D', 'Q'],
+    u'feather': [ 'f', 'e', 'D', 'Q'],
+    u'feel': [ 'f', 'I', 'l'],
+    u'feet': [ 'f', 'I', 't'],
+    u'field': [ 'f', 'I', 'l', 'd'],
+    u'fin': [ 'f', 'i', 'n'],
+    u'fine': [ 'f', 'Ä', 'n'],
+    u'finger': [ 'f', 'i', 'N', 'g', 'Q'],
+    u'finland': [ 'f', 'i', 'n', 'l', 'Q', 'n', 'd'],
+    u'finn': [ 'f', 'i', 'n'],
+    u'finnish': [ 'f', 'i', 'n', 'i', 'S'],
+    u'first': [ 'f', 'ö', 's', 't'],
+    u'fish': [ 'f', 'i', 'S'],
+    u'fit': [ 'f', 'i', 't'],
+    u'flower': [ 'f', 'l', 'å', 'Q'],
+    u'food': [ 'f', 'u', 'd'],
+    u'forest': [ 'f', 'Y', 'r', 'i', 's', 't'],
+    u'fork': [ 'f', 'O', 'k'],
+    u'fox': [ 'f', 'Y', 'k', 's'],
+    u'friend': [ 'f', 'r', 'e', 'n', 'd'],
+    u'full': [ 'f', 'U', 'l'],
+    u'fun': [ 'f', 'a', 'n'],
+    u'fur': [ 'f', 'ö'],
+    u'game': [ 'g', 'E', 'm'],
+    u'garage': [ 'g', 'ä', 'r', 'A', 'Z'],
+    u'girl': [ 'g', 'ö', 'l'],
+    u'glass': [ 'g', 'l', 'A', 's'],
+    u'goal': [ 'g', 'o', 'l'],
+    u'goat': [ 'g', 'o', 't'],
+    u'gold': [ 'g', 'o', 'l', 'd'],
+    u'good': [ 'g', 'U', 'd'],
+    u'good_evening': [ 'g', 'U', 'd', 'I', 'v', 'n', 'i', 'N'],
+    u'good_morning': [ 'g', 'U', 'd', 'm', 'O', 'n', 'i', 'N'],
+    u'good_night': [ 'g', 'U', 'd', 'n', 'Ä', 't'],
+    u'grass': [ 'g', 'r', 'A', 's'],
+    u'green': [ 'g', 'r', 'I', 'n'],
+    u'grey': [ 'g', 'r', 'E'],
+    u'hair': [ 'H', 'W'],
+    u'hairy': [ 'H', 'W', 'r', 'I'],
+    u'hand': [ 'H', 'ä', 'n', 'd'],
+    u'hard': [ 'H', 'A', 'd'],
+    u'hare': [ 'H', 'W'],
+    u'hat': [ 'H', 'ä', 't'],
+    u'hay': [ 'H', 'E'],
+    u'he_goes': [ 'H', 'I', 'g', 'o', 'z'],
+    u'healthy': [ 'H', 'e', 'l', 'T', 'I'],
+    u'hear': [ 'H', 'R'],
+    u'heart': [ 'H', 'A', 't'],
+    u'hello': [ 'H', 'Q', 'l', 'o'],
+    u'hen': [ 'H', 'e', 'n'],
+    u'here': [ 'H', 'R'],
+    u'here_you_are': [ 'H', 'R', 'j', 'Q', 'A'],
+    u'high': [ 'H', 'Ä'],
+    u'home': [ 'H', 'o', 'm'],
+    u'horse': [ 'H', 'O', 's'],
+    u'house': [ 'H', 'å', 's'],
+    u'hurry_up': [ 'H', 'a', 'r', 'I', 'a', 'p'],
+    u'i_am': [ 'Ä', 'ä', 'm'],
+    u'i_am_sorry': [ 'Ä', 'ä', 'm', 's', 'Y', 'r', 'I'],
+    u'i_go': [ 'Ä', 'g', 'o'],
+    u'i_like': [ 'Ä', 'l', 'Ä', 'k'],
+    u'i_live_in_finland': [ 'Ä', 'l', 'i', 'v', 'i', 'n', 'f', 'i', 'n', 'l', 'Q', 'n', 'd'],
+    u'i_speak_finnish': [ 'Ä', 's', 'p', 'I', 'k', 'f', 'i', 'n', 'i', 'S'],
+    u'i_was': [ 'Ä', 'w', 'Q', 'z'],
+    u'ice': [ 'Ä', 's'],
+    u'ice_hockey': [ 'Ä', 's', 'H', 'Y', 'k', 'I'],
+    u'ice_skating': [ 'Ä', 's', 's', 'k', 'E', 't', 'i', 'N'],
+    u'it': [ 'i', 't'],
+    u'jam': [ 'J', 'ä', 'm'],
+    u'jaw': [ 'J', 'O'],
+    u'jet': [ 'J', 'e', 't'],
+    u'juice': [ 'J', 'u', 's'],
+    u'jump': [ 'J', 'a', 'm', 'p'],
+    u'june': [ 'J', 'u', 'n'],
+    u'kitchen': [ 'k', 'i', 'C', 'i', 'n'],
+    u'knee': [ 'n', 'I'],
+    u'knife': [ 'n', 'Ä', 'f'],
+    u'lake': [ 'l', 'E', 'k'],
+    u'lamp': [ 'l', 'ä', 'm', 'p'],
+    u'language': [ 'l', 'ä', 'N', 'g', 'w', 'i', 'J'],
+    u'lead': [ 'l', 'e', 'd'],
+    u'leaf': [ 'l', 'I', 'f'],
+    u'learn': [ 'l', 'ö', 'n'],
+    u'leave': [ 'l', 'I', 'v'],
+    u'legs': [ 'l', 'e', 'g', 'z'],
+    u'lemon': [ 'l', 'e', 'm', 'Q', 'n'],
+    u'lets_go': [ 'l', 'e', 't', 's', 'g', 'o'],
+    u'lick': [ 'l', 'i', 'k'],
+    u'life': [ 'l', 'Ä', 'f'],
+    u'light': [ 'l', 'Ä', 't'],
+    u'lion': [ 'l', 'Ä', 'Q', 'n'],
+    u'lips': [ 'l', 'i', 'p', 's'],
+    u'listen': [ 'l', 'i', 's', 'n'],
+    u'live': [ 'l', 'Ä', 'v'],
+    u'living_room': [ 'l', 'i', 'v', 'i', 'N', 'r', 'u', 'm'],
+    u'lock': [ 'l', 'Y', 'k'],
+    u'log': [ 'l', 'Y', 'g'],
+    u'long': [ 'l', 'Y', 'N'],
+    u'look': [ 'l', 'U', 'k'],
+    u'loud': [ 'l', 'å', 'd'],
+    u'love': [ 'l', 'a', 'v'],
+    u'low': [ 'l', 'o'],
+    u'lunch': [ 'l', 'a', 'n', 'C'],
+    u'make': [ 'm', 'E', 'k'],
+    u'man': [ 'm', 'ä', 'n'],
+    u'maths': [ 'm', 'ä', 'T', 's'],
+    u'mats': [ 'm', 'ä', 't', 's'],
+    u'meat': [ 'm', 'I', 't'],
+    u'milk': [ 'm', 'i', 'l', 'k'],
+    u'money': [ 'm', 'a', 'n', 'I'],
+    u'monkey': [ 'm', 'a', 'N', 'k', 'I'],
+    u'month': [ 'm', 'a', 'n', 'T'],
+    u'moon': [ 'm', 'u', 'n'],
+    u'moose': [ 'm', 'u', 's'],
+    u'more': [ 'm', 'O'],
+    u'morning': [ 'm', 'O', 'n', 'i', 'N'],
+    u'mother': [ 'm', 'a', 'D', 'Q'],
+    u'mouse': [ 'm', 'å', 's'],
+    u'mouth': [ 'm', 'å', 'D'],
+    u'move': [ 'm', 'u', 'v'],
+    u'movie': [ 'm', 'u', 'v', 'I'],
+    u'music': [ 'm', 'j', 'u', 'z', 'i', 'k'],
+    u'my_name_is': [ 'm', 'Ä', 'n', 'E', 'm', 'i', 'z'],
+    u'neck': [ 'n', 'e', 'k'],
+    u'neighbour': [ 'n', 'E', 'b', 'Q'],
+    u'nice_to_meet_you': [ 'n', 'Ä', 's', 't', 'Q', 'm', 'I', 't', 'j', 'Q'],
+    u'night': [ 'n', 'Ä', 't'],
+    u'no_thank_you': [ 'n', 'o', 'T', 'ä', 'N', 'k', 'j', 'Q'],
+    u'north': [ 'n', 'O', 'T'],
+    u'nose': [ 'n', 'o', 'z'],
+    u'now': [ 'n', 'å'],
+    u'of': [ 'Q', 'v'],
+    u'off': [ 'O', 'f'],
+    u'old': [ 'o', 'l', 'd'],
+    u'once': [ 'w', 'a', 'n', 's'],
+    u'one': [ 'w', 'a', 'n'],
+    u'ones': [ 'w', 'a', 'n', 'z'],
+    u'orange': [ 'Y', 'r', 'i', 'n', 'J'],
+    u'owl': [ 'å', 'l'],
+    u'pack': [ 'p', 'ä', 'k'],
+    u'page': [ 'p', 'E', 'J'],
+    u'paint': [ 'p', 'E', 'n', 't'],
+    u'parents': [ 'p', 'W', 'r', 'Q', 'n', 't', 's'],
+    u'park': [ 'p', 'A', 'k'],
+    u'parrot': [ 'p', 'ä', 'r', 'Q', 't'],
+    u'party': [ 'p', 'A', 't', 'I'],
+    u'pays': [ 'p', 'E', 'z'],
+    u'pea': [ 'p', 'I'],
+    u'pear': [ 'p', 'W'],
+    u'peas': [ 'p', 'I', 'z'],
+    u'pepper': [ 'p', 'e', 'p', 'Q'],
+    u'pet': [ 'p', 'e', 't'],
+    u'phone': [ 'f', 'o', 'n'],
+    u'pie': [ 'p', 'Ä'],
+    u'piece': [ 'p', 'I', 's'],
+    u'pig': [ 'p', 'i', 'g'],
+    u'pink': [ 'p', 'i', 'N', 'k'],
+    u'plant': [ 'p', 'l', 'A', 'n', 't'],
+    u'plate': [ 'p', 'l', 'E', 't'],
+    u'play': [ 'p', 'l', 'E'],
+    u'please': [ 'p', 'l', 'I', 'z'],
+    u'pool': [ 'p', 'u', 'l'],
+    u'potato': [ 'p', 'Q', 't', 'E', 't', 'o'],
+    u'pull': [ 'p', 'U', 'l'],
+    u'purple': [ 'p', 'ö', 'p', 'l'],
+    u'quiet': [ 'k', 'w', 'Ä', 'Q', 't'],
+    u'rat': [ 'r', 'ä', 't'],
+    u'read': [ 'r', 'e', 'd'],
+    u'real': [ 'r', 'E', 'A', 'l'],
+    u'red': [ 'r', 'e', 'd'],
+    u'rest': [ 'r', 'e', 's', 't'],
+    u'ride': [ 'r', 'Ä', 'd'],
+    u'right': [ 'r', 'Ä', 't'],
+    u'river': [ 'r', 'i', 'v', 'Q'],
+    u'rock': [ 'r', 'Y', 'k'],
+    u'room': [ 'r', 'u', 'm'],
+    u'round': [ 'r', 'å', 'n', 'd'],
+    u'run': [ 'r', 'a', 'n'],
+    u'safe': [ 's', 'E', 'f'],
+    u'salad': [ 's', 'ä', 'l', 'Q', 'd'],
+    u'salt': [ 's', 'O', 'l', 't'],
+    u'sand': [ 's', 'ä', 'n', 'd'],
+    u'save': [ 's', 'E', 'v'],
+    u'say': [ 's', 'E'],
+    u'school': [ 's', 'k', 'u', 'l'],
+    u'sea': [ 's', 'I'],
+    u'seal': [ 's', 'I', 'l'],
+    u'seat': [ 's', 'I', 't'],
+    u'seed': [ 's', 'I', 'd'],
+    u'sees': [ 's', 'I', 'z'],
+    u'set': [ 's', 'e', 't'],
+    u'she': [ 'S', 'I'],
+    u'she_is': [ 'S', 'I', 'i', 'z'],
+    u'she_likes': [ 'S', 'I', 'l', 'Ä', 'k', 's'],
+    u'sheep': [ 'S', 'I', 'p'],
+    u'sheet': [ 'S', 'I', 't'],
+    u'shine': [ 'S', 'Ä', 'n'],
+    u'ship': [ 'S', 'i', 'p'],
+    u'shirt': [ 'S', 'ö', 't'],
+    u'shoe': [ 'S', 'u'],
+    u'shop': [ 'S', 'Y', 'p'],
+    u'shoulder': [ 'S', 'o', 'l', 'd', 'Q'],
+    u'shower': [ 'S', 'å', 'Q'],
+    u'shows': [ 'S', 'o', 'z'],
+    u'sing': [ 's', 'i', 'N'],
+    u'sister': [ 's', 'i', 's', 't', 'Q'],
+    u'sit': [ 's', 'i', 't'],
+    u'ski': [ 's', 'k', 'I'],
+    u'sleep': [ 's', 'l', 'I', 'p'],
+    u'smell': [ 's', 'm', 'e', 'l'],
+    u'snack': [ 's', 'n', 'ä', 'k'],
+    u'snake': [ 's', 'n', 'E', 'k'],
+    u'socks': [ 's', 'Y', 'k', 's'],
+    u'soft': [ 's', 'Y', 'f', 't'],
+    u'soon': [ 's', 'u', 'n'],
+    u'sorry': [ 's', 'Y', 'r', 'I'],
+    u'sound': [ 's', 'å', 'n', 'd'],
+    u'soup': [ 's', 'u', 'p'],
+    u'speak': [ 's', 'p', 'I', 'k'],
+    u'spoon': [ 's', 'p', 'u', 'n'],
+    u'squirrel': [ 's', 'k', 'w', 'i', 'r', 'Q', 'l'],
+    u'strawberry': [ 's', 't', 'r', 'O', 'b', 'r', 'I'],
+    u'sun': [ 's', 'a', 'n'],
+    u'swedish': [ 's', 'w', 'I', 'd', 'i', 'S'],
+    u'sweet': [ 's', 'w', 'I', 't'],
+    u'swim': [ 's', 'w', 'i', 'm'],
+    u'table': [ 't', 'A', 'b', 'l'],
+    u'taste': [ 't', 'E', 's', 't'],
+    u'teacher': [ 't', 'I', 'C', 'Q'],
+    u'teas': [ 't', 'I', 'z'],
+    u'teeth': [ 't', 'I', 'T'],
+    u'ten': [ 't', 'e', 'n'],
+    u'than': [ 'D', 'ä', 'n'],
+    u'thank_you': [ 'T', 'ä', 'N', 'k', 'j', 'Q'],
+    u'that': [ 'D', 'ä', 't'],
+    u'the': [ 'D', 'Q'],
+    u'theatre': [ 'T', 'R', 't', 'Q'],
+    u'their': [ 'D', 'W'],
+    u'then': [ 'D', 'e', 'n'],
+    u'there': [ 'D', 'W'],
+    u'these': [ 'D', 'I', 'z'],
+    u'they': [ 'D', 'E'],
+    u'thick': [ 'T', 'i', 'k'],
+    u'thin': [ 'T', 'i', 'n'],
+    u'thing': [ 'T', 'i', 'N'],
+    u'think': [ 'T', 'i', 'N', 'k'],
+    u'thirst': [ 'T', 'ö', 's', 't'],
+    u'thirsty': [ 'T', 'ö', 's', 't', 'I'],
+    u'this': [ 'D', 'i', 's'],
+    u'those': [ 'D', 'o', 'z'],
+    u'three': [ 'T', 'r', 'I'],
+    u'throw': [ 'T', 'r', 'o'],
+    u'time': [ 't', 'Ä', 'm'],
+    u'toast': [ 't', 'o', 's', 't'],
+    u'today': [ 't', 'Q', 'd', 'E'],
+    u'toe': [ 't', 'o'],
+    u'toilet': [ 't', 'Å', 'l', 'i', 't'],
+    u'tomato': [ 't', 'Q', 'm', 'A', 't', 'o'],
+    u'tomorrow': [ 't', 'Q', 'm', 'Y', 'r', 'o'],
+    u'tongue': [ 't', 'a', 'N'],
+    u'too': [ 't', 'u'],
+    u'tortoise': [ 't', 'O', 't', 'Q', 's'],
+    u'town': [ 't', 'å', 'n'],
+    u'tree': [ 't', 'r', 'I'],
+    u'two': [ 't', 'u'],
+    u'use': [ 'j', 'u', 's'],
+    u'van': [ 'v', 'ä', 'n'],
+    u'vest': [ 'v', 'e', 's', 't'],
+    u'vet': [ 'v', 'e', 't'],
+    u'village': [ 'v', 'i', 'l', 'i', 'J'],
+    u'walk': [ 'w', 'O', 'k'],
+    u'wall': [ 'w', 'O', 'l'],
+    u'want': [ 'w', 'Y', 'n', 't'],
+    u'was': [ 'w', 'Q', 'z'],
+    u'wash': [ 'w', 'Y', 'S'],
+    u'watch': [ 'w', 'Y', 'C'],
+    u'water': [ 'w', 'O', 't', 'Q'],
+    u'we_go': [ 'w', 'I', 'g', 'o'],
+    u'we_were': [ 'w', 'I', 'w', 'ö'],
+    u'wear': [ 'w', 'W'],
+    u'week': [ 'w', 'I', 'k'],
+    u'well_done': [ 'w', 'e', 'l', 'd', 'a', 'n'],
+    u'were': [ 'w', 'ö'],
+    u'west': [ 'w', 'e', 's', 't'],
+    u'wet': [ 'w', 'e', 't'],
+    u'what': [ 'w', 'Y', 't'],
+    u'wheel': [ 'w', 'I', 'l'],
+    u'where': [ 'w', 'W'],
+    u'which': [ 'w', 'i', 'C'],
+    u'white': [ 'w', 'Ä', 't'],
+    u'who': [ 'H', 'u'],
+    u'why': [ 'w', 'Ä'],
+    u'win': [ 'w', 'i', 'n'],
+    u'window': [ 'w', 'i', 'n', 'd', 'o'],
+    u'wish': [ 'w', 'i', 'S'],
+    u'with': [ 'w', 'i', 'D'],
+    u'woman': [ 'w', 'U', 'm', 'Q', 'n'],
+    u'wool': [ 'w', 'U', 'l'],
+    u'worm': [ 'w', 'ö', 'm'],
+    u'would_you_like_some_juice': [ 'w', 'Q', 'd', 'j', 'Q', 'l', 'Ä', 'k', 's', 'a', 'm', 'J', 'u', 's'],
+    u'would_you_like_some_more': [ 'w', 'Q', 'd', 'j', 'Q', 'l', 'Ä', 'k', 's', 'a', 'm', 'm', 'O'],
+    u'write': [ 'r', 'Ä', 't'],
+    u'wrong': [ 'r', 'Y', 'N'],
+    u'year': [ 'j', 'ö'],
+    u'yellow': [ 'j', 'e', 'l', 'o'],
+    u'yes_please': [ 'j', 'e', 's', 'p', 'l', 'I', 'z'],
+    u'yesterday': [ 'j', 'e', 's', 't', 'Q', 'd', 'E'],
+    u'yet': [ 'j', 'e', 't'],
+    u'you_are': [ 'j', 'Q', 'A'],
+    u'you_go': [ 'j', 'Q', 'g', 'o'],
+    u'you_re_welcome': [ 'j', 'Q', 'r', 'E', 'w', 'e', 'l', 'k', 'Q', 'm'],
+    u'you_were': [ 'j', 'Q', 'w', 'ö'],
+    u'young': [ 'j', 'a', 'N'],
+    u'your': [ 'j', 'O'],
+    u'zoo': [ 'z', 'u'],
+    u'zoos': [ 'z', 'u', 'z']  }
 
 
+# some extra words:
+
+for word in ['feather', 'healthy', 'it', 'eat', 'jet', 'yet']:
+    for n in [ '1','2','3','4','5','6','7','8','9']:
+        words[ word + n ] = words[word]
+        words[ word + n + '_txt'] = words[word]
+
+for word in ['juice', 'use', 'your', 'jaw', 'jump', 'jam', 'age', 'orange']:
+    words[ word + '_txt'] = words[word]
 
 '''  3.  Define server loop '''
 
@@ -670,7 +679,7 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
         zmean = np.loadtxt( meanfile ) #traindata.mean
         zstd = np.loadtxt( stdfile )# traindata.std
 
-        lsqweights = np.loadtxt( lsqweightfile )
+        lsq_weights = np.loadtxt( lsqweightfile ).reshape(45, 120)
 
         loadtime = time.clock()-loadstartmoment
         print ("Loading took %0.1f seconds!"%loadtime)
@@ -701,24 +710,33 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
 
             print ('Connected by', addr)
 
-            
-            print ('Word to be classified:')
-
-
+            print ('Length of word to be classified:')
             datalen = conn.recv(single_integer_packer.size)
-            if not datalen: break
-            
-            print ("Going to read ascii data of length %i" % unpacked_datalen)
 
-            char_packer = struct.Struct( unpacked_datalen[0]*'c')   
+            if not datalen: break
+
+            print (datalen)
+
+            unpacked_datalen = single_integer_packer.unpack(datalen)
+            unpacked_datalen = int(unpacked_datalen[0])
+            print(unpacked_datalen)
+            print ("Going to read unicode data of length %i" % unpacked_datalen)
+
+            char_packer = struct.Struct( unpacked_datalen*'c')   
             conn.send( ackpacket )
 
+            print ('Word to be classified:')
 
-            data = conn.recv(char_packer.size)
-            if not data: break
+            worddata = conn.recv(char_packer.size)
+            if not worddata: break
+
+            print(worddata)
 
             try:
-                word = char_packer.unpack( data )
+                word = worddata.decode("utf-8").replace('\x00', '') #char_packer.unpack( worddata )
+                #word = ''.join(word)
+                print (word)
+                #word = word.decode('utf-16')
                 word_data_ok = True           
             except:
                 print ("Something went wrong, let's print stack trace:")
@@ -726,139 +744,194 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
                 conn.close()
                 word_data_ok = False
             
+            if word_data_ok:
 
-            phones = words[word]
+                print("Got word \"%s\""%word)
 
-            if phone not in words.keys():
-                print ("Word not in dictionary: Closing connection")
-                conn.close()
-                word_data_ok = False
-                continue
-            
-            classes = [ classdict[phone]['class'] for phone in phones  ]
+                print(words[word])
 
-            conn.send( ackpacket )
+                if word not in words:
+                    print ("Word not in dictionary: Closing connection")
+                    conn.close()
+                    word_data_ok = False
+                    continue
 
+                phones = words[word]            
+                classes = [ class_def[phone]['class'] for phone in phones  ]
 
-            print ('Will now classify using models %s' % modelfile)
-
-            datalen = conn.recv(single_integer_packer.size)
-            if not datalen: break
+                conn.send( ackpacket )
 
 
-            unpacked_datalen = single_integer_packer.unpack(datalen)
+                print ('Will now classify using models %s' % modelfile)
 
-            print ("Going to read float data of length %i" % unpacked_datalen)
-
-            float_packer = struct.Struct( unpacked_datalen[0]*'f')   
-            conn.send( ackpacket )
+                datalen = conn.recv(single_integer_packer.size)
+                if not datalen: break
 
 
+                unpacked_datalen = single_integer_packer.unpack(datalen)
 
-            data = conn.recv(float_packer.size)
-            if not data: break
-
-            try:
-                unpacked_data = float_packer.unpack( data )
-                unpacked_data_ok = True
-            except:
-                print ("Something went wrong, let's print stack trace:")
-                traceback.print_exc()
-                conn.close()
-                unpacked_data_ok = False
-                continue
-
-            if unpacked_data_ok:
-
-                featdim=len(unpacked_data)
-
-                test_x = np.array(unpacked_data).reshape(-1, timesteps, datadim)
-
-                if debugging:
-                    for n in range(0,test_x.shape[0]):
-                        np.savetxt('/tmp/got_features%i' % n,test_x[n,:,:])
+                print ("Going to read float data of length %i" % unpacked_datalen)
 
 
+                float_packer = struct.Struct( unpacked_datalen[0]*'f')   
+                conn.send( ackpacket )
 
-                test_x = (test_x-norm_means)/norm_stds
-                test_y = np.zeros(test_x.shape[0]);
+                MSGLEN = unpacked_datalen[0] * 4
+                chunks = []
+                bytes_recd = 0
+                while bytes_recd < MSGLEN:
+                    chunk = conn.recv(min(MSGLEN - bytes_recd, 2048))
+                    if chunk == b'':
+                        raise RuntimeError("socket connection broken")
+                    chunks.append(chunk)
+                    bytes_recd = bytes_recd + len(chunk)
+                data = b''.join(chunks)
 
-                if debugging:
-                    for n in range(0,test_x.shape[0]):
-                        np.savetxt('/tmp/norm_features%i' % n,test_x[n,:,:])
 
+                #data = conn.recv(float_packer.size)
+                if not data: break
 
-                #  Classification here!  #
-
-                teststartmoment= time.clock()
-
-                #return_data = model.predict(test_x, batch_size=batch_size)
-                EMB = sess.run([ prediction ], 
-                               feed_dict={ x: test_x, 
-                                           y: test_y, 
-                                           keep_prob: 1 })
-
-                #return_data = EMB # np.argmax(EMB,2).reshape([-1])
-
-                guesses = np.argmax(EMB,1)
-
-                print ("Classified:")
-                print (guesses)
-
-                ranking_matrix = np.zeros([45,120])
-
-                for i in range(EMB.shape[0]):
-                    guess = guesses[i]
-                    wanted = classes[i]
-                    
-                    ranking_matrix[ wanted, guess ] += 1
-
-                if (ranking_matrix).sum(-1).sum(-1) > 0:
-                    ranking_matrix /= (ranking_matrix).sum(-1).sum(-1)
-                    
-                score = (lsq_weights*ranking_matrix).sum(-1).sum(-1)
-
-                testtime = time.clock()-teststartmoment
-
-                # Classification done, let's go back
-                # to handling data transfer:
-
-                encoded_length=single_integer_packer.pack( 1 )
-
-                conn.send( encoded_length  )
-
-                print ("Waiting for acc:")
-                client_ack = conn.recv( acklength )
-
-                try: 
-                    ack = (single_integer_packer.unpack(client_ack))
-                    ack_ok = True
+                try:
+                    unpacked_data = float_packer.unpack( data )
+                    unpacked_data_ok = True
                 except:
-                    ack_ok = False
                     print ("Something went wrong, let's print stack trace:")
+                    print ("Size of data: " + str(len(data)))
+
                     traceback.print_exc()
                     conn.close()
+                    unpacked_data_ok = False
+                    continue
 
-                if ack_ok:
+                if unpacked_data_ok:
 
-                    print ("client_ack: " + str(ack) )
+                    featdim=len(unpacked_data)
 
-                    if single_integer_packer.unpack(client_ack)[0] == ackvalue:
-                        result_packer = struct.Struct((len(guesses)+1) * 'f')
-                        encoded_score_data = single_result_packer.pack(*([score], guesses.tolist()))
-                        #print 'Encoded data: "%s"' % binascii.hexlify(encoded_data)
+                    test_x = np.array(unpacked_data).reshape(-1, timesteps, datadim)
 
-                        conn.send(encoded_score_data)
-                        conn.send(encoded_class_data)
-
-                    conn.close()
+                    if debugging:
+                        for n in range(0,test_x.shape[0]):
+                            np.savetxt('/tmp/got_features%i' % n,test_x[n,:,1:])
 
 
-                    connectiontime = time.clock() - connectionstartstartmoment
+                    np.savetxt("/tmp/feat_orig", test_x[0,:,:])
 
-                    print ("Processing took %f s " % (connectiontime))
+                    for n in range(test_x.shape[0]):
+                        non_empty_rows = np.where(np.abs(test_x[n,:,:]).sum(-1)>0)[0]
+                        print("Non-empty rows for sample %i:" %n)
+                        print(non_empty_rows)
+                        test_x[n,non_empty_rows,:] = np.log( test_x[n,non_empty_rows,:] + 0.001 )
+                        #np.savetxt("/tmp/feat_log", test_x[0,:,:])
+
+                        np.savetxt('/tmp/log_features%i' % n,test_x[n,:,1:])
+
+                        test_x[n,non_empty_rows,:] = ( test_x[n,non_empty_rows,:] - zmean ) / zstd
+
+                    np.savetxt("/tmp/feat_normalised", test_x[0,:,:])
+
+                    test_y = np.zeros(test_x.shape[0]);
+
+                    if debugging:
+                        for n in range(0,test_x.shape[0]):
+                            np.savetxt('/tmp/norm_features%i' % n,test_x[n,:,1:])
+
+
+                    #  Classification here!  #
+
+                    teststartmoment= time.clock()
+
+                    #return_data = model.predict(test_x, batch_size=batch_size)
+                    [EMB] = sess.run([ prediction ], 
+                                   feed_dict={ x: test_x[:,:,1:], 
+                                               y: test_y, 
+                                               keep_prob: 1 })
+
+                    #return_data = EMB # np.argmax(EMB,2).reshape([-1])
+
+                    print ("EMB shape")
+                    print (EMB.shape)             
+
+                    guesses = np.argmax(EMB,1)
+                    print ("guesses shape")
+                    print (guesses.shape)
+
+                    print ("Classified:")
+                    print (guesses)
+
+                    ranking_matrix = np.zeros([45,120])
+
+                    for i in range(test_y.shape[0]):
+                        guess = guesses[i]
+                        wanted = classes[i]
+
+                        ranking_matrix[ wanted, guess ] += 1
+
+                    if (ranking_matrix).sum(-1).sum(-1) > 0:
+                        ranking_matrix /= (ranking_matrix).sum(-1).sum(-1)
+
+                    score = (lsq_weights*ranking_matrix).sum(-1).sum(-1)
+
+                    if score < 1:
+                        rounded_score = -2
+
+                    else:
+                        rounded_score = round(score)
+                        if rounded_score > 5:
+                            rounded_score = 5
+
+                    print ("Score %0.2f -> %i" % (score, rounded_score))
+                    testtime = time.clock()-teststartmoment
+
+                    # Classification done, let's go back
+                    # to handling data transfer:
+
+                    encoded_length=single_integer_packer.pack( len(guesses)+len(classes)+1 )
+
+                    conn.send( encoded_length  )
+
+                    print ("Waiting for acc:")
+                    client_ack = conn.recv( acklength )
+
+                    try: 
+                        ack = (single_integer_packer.unpack(client_ack))
+                        ack_ok = True
+                    except:
+                        ack_ok = False
+                        print ("Something went wrong, let's print stack trace:")
+                        traceback.print_exc()
+                        conn.close()
+
+                    if ack_ok:
+
+                        print ("client_ack: " + str(ack) )
+
+                        if single_integer_packer.unpack(client_ack)[0] == ackvalue:
+
+                            packable = [rounded_score]
+                            for cl in classes:
+                                packable.append( cl )
+                            for gu in guesses:
+                                packable.append( gu )
+
+                            print(packable)
+
+                            result_packer = struct.Struct(len(packable) * 'f')
+                            encoded_score_data = result_packer.pack( *packable )
+                            print ('Encoded data: "%s"' % binascii.hexlify(encoded_score_data))
+
+                            
+
+                            conn.send(encoded_score_data)
+
+                        conn.close()
+
+
+                        connectiontime = time.clock() - connectionstartstartmoment
+
+                        print ("Processing took %f s " % (connectiontime))
 
             sys.stdout.flush()
+            
 
 
 if __name__ == '__main__':
