@@ -45,13 +45,13 @@ zmax_len = 62#traindata.max_len
 znum_classes = 119 #traindata.num_classes
 
 usedim = np.arange(1,37)
-featdim = 37
+featdim = 36
 
 hm_epochs = 40
 n_classes = znum_classes
 batch_size = 128
 n_chunks = featdim #28
-rnn_size = 512
+rnn_size = 384 #512
 n_hidden = rnn_size
 
 train_len = zmax_len #30
@@ -416,6 +416,7 @@ words = {
     u'maths': [ 'm', 'ä', 'T', 's'],
     u'mats': [ 'm', 'ä', 't', 's'],
     u'meat': [ 'm', 'I', 't'],
+    u'meatball': [ 'm', 'I', 't', 'b', 'O', 'l'],
     u'milk': [ 'm', 'i', 'l', 'k'],
     u'money': [ 'm', 'a', 'n', 'I'],
     u'monkey': [ 'm', 'a', 'N', 'k', 'I'],
@@ -679,7 +680,7 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
         zmean = np.loadtxt( meanfile ) #traindata.mean
         zstd = np.loadtxt( stdfile )# traindata.std
 
-        lsq_weights = np.loadtxt( lsqweightfile ).reshape(45, 120)
+        lsq_weights = np.loadtxt( lsqweightfile )#.reshape(45, 120)
 
         loadtime = time.clock()-loadstartmoment
         print ("Loading took %0.1f seconds!"%loadtime)
@@ -865,11 +866,18 @@ def run_server_loop(portfilename, modelfile, meanfile, stdfile, lsqweightfile):
                         wanted = classes[i]
 
                         ranking_matrix[ wanted, guess ] += 1
+                        
+                    ranking_line= np.zeros([45*120+1])
+                    
+                    ranking_sum = (ranking_matrix).sum(-1).sum(-1) 
+                    if ranking_sum > 0:
+                        ranking_line[0] = ranking_sum
+                        ranking_matrix /= ranking_sum
 
-                    if (ranking_matrix).sum(-1).sum(-1) > 0:
-                        ranking_matrix /= (ranking_matrix).sum(-1).sum(-1)
+                        ranking_line[1:] = ranking_matrix.reshape([-1])
 
-                    score = (lsq_weights*ranking_matrix).sum(-1).sum(-1)
+                    
+                    score = (lsq_weights * ranking_line).sum(-1)
 
                     if score < 1:
                         rounded_score = -2

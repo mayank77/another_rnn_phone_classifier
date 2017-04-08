@@ -5,10 +5,10 @@ PATH=/l/opt/anaconda3/bin:/usr/local/bin/:$PATH
 
 source activate tensorflow012
 
-python3 ./serve_bidir_lstm_384x6.py \
+python3 ./serve_bidir_lstm_512x5-melbin36.py \
     /home/condadnn/another_rnn_phone_classifier/serving/ports/portnr \
-    /home/condadnn/another_rnn_phone_classifier/models/bidir_lstm_6x384_checkpoint_16000/model2.ckpt-16000 \
-    /home/condadnn/another_rnn_phone_classifier/models/bidir_lstm_6x384_checkpoint_16000/traindata.mean \
-    /home/condadnn/another_rnn_phone_classifier/models/bidir_lstm_6x384_checkpoint_16000/traindata.std \
-    /home/condadnn/another_rnn_phone_classifier/models/bidir_lstm_6x384_checkpoint_16000/lsq_weights \
+    /home/condadnn/another_rnn_phone_classifier/models/rnn512-e/model2.ckpt-48055 \
+    /home/condadnn/another_rnn_phone_classifier/models/rnn512-e/traindata.mean \
+    /home/condadnn/another_rnn_phone_classifier/models/rnn512-e/traindata.std \
+    /home/condadnn/another_rnn_phone_classifier/models/rnn512-e/testscores-48055/lsq_weights
 
