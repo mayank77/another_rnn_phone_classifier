@@ -32,7 +32,7 @@ fi_pickle_dir='../features/work_in_progress/'+fi_corpus+'/pickles'
 test_corpus = "fysiak-gamedata-2"
 test_pickle_dir='../features/work_in_progress/'+test_corpus+'/pickles'
 
-logs_path = '../models/rnn512-b'
+logs_path = '../models/rnn512-clean_c-a'
 LOG_DIR=logs_path
 #
 # A function that will be useful:
@@ -259,7 +259,7 @@ np.savetxt(os.path.join(logs_path, "traindata.max_len"), np.array([traindata.max
 
 featdim=36
 
-hm_epochs = 40
+hm_epochs = 5
 n_classes = traindata.num_classes
 batch_size = 128
 n_chunks = featdim #28

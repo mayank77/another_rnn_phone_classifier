@@ -633,10 +633,10 @@ def get_features( conf, audiofile, align,  preprocessors, cleanphonedata,  phone
 
 def extract_collection_and_save( conf, collection, training=True ):
 
-    cleanphonedata = np.zeros([250000,conf.feature_dimension] ,dtype='float32')
-    phoneclasses = np.zeros([20000], dtype='uint8')
-    phone_indices = np.zeros([20000,2], dtype='uint32')
-    segment_lengths = np.zeros([20000], dtype='uint32')
+    cleanphonedata = np.zeros([450000,conf.feature_dimension] ,dtype='float32')
+    phoneclasses = np.zeros([40000], dtype='uint8')
+    phone_indices = np.zeros([40000,2], dtype='uint32')
+    segment_lengths = np.zeros([40000], dtype='uint32')
     segment_details = []
 
     conf.lastframeindex = 0

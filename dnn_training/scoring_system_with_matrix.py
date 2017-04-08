@@ -9,6 +9,7 @@ import re
 #from scipy.optimize import lsq_linear
 #from scipy.optimize import least_squares
 from scipy import optimize
+from scipy.linalg import lstsq
 
 classdict = {"_1_" : u"n",
              "_2_" : u"t",
@@ -187,8 +188,8 @@ class_def = {
 
 
 #LOG_DIR='/tmp/tensorflow_logs/copy12-rnn384-d/'
-LOG_DIR='../models/bidir_lstm_6x384_checkpoint_16000/'
-checkpoint=16000
+LOG_DIR='../models/rnn512-clean_c-a/'
+checkpoint=15000
 
 prediction_files={ 'native' : LOG_DIR + "players_native_y_and_prediction."+str(checkpoint),
                   'good': LOG_DIR + "players_good_y_and_prediction."+str(checkpoint),
@@ -207,7 +208,7 @@ phone_pickles = { 'bad' : os.path.join(test_pickle_dir, 'disqualified-32smoothed
 points_per_phone = { 'bad' : -2,
                      'ok' : 2,
                      'good' : 5,
-                     'native' : 5 }
+                     'native' : 7 }
 
 prediction_array = []
 classes_array = []
@@ -277,7 +278,7 @@ for category in ['native', 'good', 'ok', 'bad' ]:
             phonebase = cl * numranks
 
             #row=posteriors[rowcounter,:]            
-            guess = predictions[rowcounter]
+            guess = int(predictions[rowcounter])
 
             #print("%i\t%s\t%s\t%s" % ( rowcounter, phone,   classdict["_%i_" % classes[rowcounter] ], classdict["_%i_" % (guess)] ) )
 
@@ -322,13 +323,16 @@ for testround in range(10):
     train_samples = np.where(all_samples != testround)[0]
     test_samples = np.where(all_samples == testround)[0]
 
-    leave_one_out_ranking_array = ranking_array[train_samples,:]
-    leave_one_out_score_array = score_array[train_samples]
+    leave_one_out_train_ranking_array = ranking_array[train_samples,:]
+    leave_one_out_train_score_array = score_array[train_samples]
+
+    leave_one_out_test_ranking_array = ranking_array[test_samples,:]
+    leave_one_out_test_score_array = score_array[test_samples]        
 
     def my_least_squares_costfunc(x):
         #return ((ranking_array * x.reshape([45,120])).sum(-1).sum(-1) - score_array.T).reshape([-1])
         #return ((ranking_array * x).sum(-1) - score_array.T).reshape([-1])
-        sum= np.abs((leave_one_out_ranking_array * x).sum(-1) - leave_one_out_score_array.T).reshape([-1])
+        sum= np.abs((leave_one_out_train_ranking_array * x).sum(-1) - leave_one_out_train_score_array.T).reshape([-1])
         sum -= 1
         sum[sum<0] = 0
         return sum
@@ -341,8 +345,9 @@ for testround in range(10):
                                     'lsq_weights_%i'%testround)):
         lsq_weight_array[testround,:] = np.loadtxt(os.path.join( LOG_DIR, 
                                                                  'lsq_weights_%i'%testround)).reshape([-1])
-
+    
     else:
+        '''
         initguess = 0.01*np.random.rand(45,120)
 
         #print("initguess cost:")
@@ -363,20 +368,27 @@ for testround in range(10):
         endcondition=0.01
         #lsq_weights={'x':initguess}
 
-        lsq_weights = optimize.least_squares(my_least_squares_costfunc, initguess, bounds=lsq_bounds, verbose=2, ftol=endcondition, xtol=endcondition)
+        #lsq_weights = optimize.least_squares(my_least_squares_costfunc, initguess, bounds=lsq_bounds, verbose=2, ftol=endcondition, xtol=endcondition)
 
 
+        '''
+        lsq_bounds=[-0.99,2.99]
+        lsq_res = optimize.lsq_linear(leave_one_out_train_ranking_array, leave_one_out_train_score_array.reshape([-1]), lsq_bounds)
 
-        #print(lsq_weights)
+        lsq_weights = lsq_res['x']
+        #[lsq_weights, residue, rank, svalue] = lstsq(leave_one_out_train_ranking_array, leave_one_out_train_score_array)
+
+
+        print(lsq_weights)
 
         outf = open('/tmp/lsq_output_%i'%testround, 'wb')
         # Pickle the list using the highest protocol available.
         pickle.dump( lsq_weights , outf, protocol=pickle.HIGHEST_PROTOCOL)
 
         np.savetxt( os.path.join( LOG_DIR, 
-                                  'lsq_weights_%i'%testround), lsq_weights['x'].reshape([45,120]))
+                                  'lsq_weights_%i'%testround), lsq_weights.reshape([45,120]))
 
-        lsq_weight_array[testround,:] = lsq_weights['x']
+        lsq_weight_array[testround,:] = lsq_weights.reshape([-1])
 
     test_ranking_array = ranking_array[test_samples,:]
     test_score_array = score_array[test_samples]
@@ -385,9 +397,25 @@ for testround in range(10):
 
     for category in ['good', 'ok', 'bad' ]:        
         target_score =  points_per_phone[category]        
-        sub_test_samples = np.where(test_score_array == target_score)[0]        
-        scores[category]= (lsq_weight_array[testround,:] * test_ranking_array[sub_test_samples,:]).sum(-1)
+
+        sub_test_samples = np.where(leave_one_out_test_score_array == target_score)[0]       
+        #print (sub_test_samples)
+        #print (leave_one_out_test_score_array[sub_test_samples])
+        scores[category]= (lsq_weight_array[testround,:] * leave_one_out_test_ranking_array[sub_test_samples,:]).sum(-1)
+     
+        print("round %i samples: %s\tmean: %0.2f\tstd: %0.2f" % (testround,
+                                                                 category,
+                                                                 np.mean(scores[category]),
+                                                                 np.std(scores[category])))
         
+
+
+        sub_test_samples = np.where(leave_one_out_train_score_array == target_score)[0]       
+        #print (sub_test_samples)
+        #print (leave_one_out_train_score_array[sub_test_samples])
+        scores[category]= (lsq_weight_array[testround,:] * leave_one_out_train_ranking_array[sub_test_samples,:]).sum(-1)
+        
+     
         print("round %i samples: %s\tmean: %0.2f\tstd: %0.2f" % (testround,
                                                                  category,
                                                                  np.mean(scores[category]),

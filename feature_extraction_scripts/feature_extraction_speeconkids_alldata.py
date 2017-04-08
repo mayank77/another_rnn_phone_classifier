@@ -31,7 +31,7 @@ import sys
 import struct
 import random
 
-from dnnutil import preprocessingwithoutnoise as preprocessing
+from dnnutil import preprocessingwithnoise as preprocessing
 
 
 #from dnnutil import get_labelstring
@@ -109,7 +109,7 @@ debug=True
 
 conf = extract_config()
 
-
+conf.preprocessing_options = ['none','overdrive','babble', 'humming'] 
 
 conf.preprocessing_scripts = {#'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
                               'none' :{'script': '../feature_extraction_scripts/preprocess_speeconkids.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] },
@@ -119,7 +119,7 @@ conf.preprocessing_scripts = {#'none' :{'script': '../feature_extraction_scripts
 
 #feature_extraction_script = '../feature_extraction_scripts/extract_5500hz_spec_with_start_end.sh'
 conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_melbin26_with_start_end.sh'
-conf.featuretype = "melbin26_and_f0_alldata"
+conf.featuretype = "melbin36_and_f0_alldata"
 
 conf.quality_control_wavdir = ""
 conf.statistics_handle = ""
@@ -533,8 +533,8 @@ for collection in collections:
 
 
 
-for collection in collections:
-    extract_collection_and_save(conf, collection)
+#for collection in collections:
+#    extract_collection_and_save(conf, collection)
 
 
 

@@ -33,7 +33,7 @@ import random
 #import subprocess
 import glob
 
-from dnnutil import preprocessingwithoutnoise as preprocessing
+from dnnutil import preprocessingwithnoise as preprocessing
 
 #from dnnutil import get_labelstring
 #from dnnutil import chop_features
@@ -51,6 +51,19 @@ extract_collection_and_save = preprocessing.extract_collection_and_save
 #import tensorflow as tf#
 # Some more output?
 #
+
+#
+# A function that will be useful:
+#
+
+def mkdir(path):
+    try:
+        os.makedirs(path)        
+    except OSError as exc:  # Python >2.5
+        #print ("dir %s exists" % path)
+        dummy = 1
+
+
 
 
 class extract_config:
@@ -114,7 +127,7 @@ conf.preprocessing_options = ['none']
 conf.preprocessing_scripts = {'none' :{'script': '../feature_extraction_scripts/preprocess_pfstar.sh', 'name' : 'clean', 'parameters': [[0,0], [0,0]] }}
 
 conf.feature_extraction_script = '../feature_extraction_scripts/extract_8000hz_melbin26_with_start_end.sh'
-conf.featuretype = "melbin26_and_f0_alldata"
+conf.featuretype = "melbin36_and_f0_alldata"
 
 conf.quality_control_wavdir = ""
 conf.statistics_handle = ""
@@ -271,23 +284,24 @@ conf.class_def = {
 #
 
 
-conf.corpus = "fysiak-gamedata-2"
+conf.corpus = "more_fysiak-gamedata-2-aligned_with_clean_f"
 conf.pickle_dir='../features/work_in_progress/'+conf.corpus+'/pickles'
 conf.statistics_dir = '../features/work_in_progress/'+conf.corpus+'/statistics/'
 
-
+mkdir(conf.pickle_dir)
+mkdir(conf.statistics_dir)
 
 # Do the align with:
 #
-# bash 03b-produce-alignments_batch.sh
+# bash 03b-produce-alignments_batch_clean-c.sh
 #
-aligndir='/teamwork/t40511_asr/c/siak/fysiak_game_data/align_siak_clean_c/'
+aligndir='/teamwork/t40511_asr/c/siak/fysiak_game_data/align_siak_clean_f/'
 
 collections=[]
 currdir=os.getcwd()
 
 # Produce file lists:
-for dataclass in [ "disqualified", "lots_of_stars",  "native_or_nativelike",  "some_stars" ]:
+for dataclass in ['some_stars']: # [ "disqualified", "lots_of_stars",  "native_or_nativelike",  "some_stars" ]:
     #bashCommand = 'find /teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass + '/ -name "*.wav"'
     
     #process = subprocess.Popen(bashCommand.split(' '), stdout=subprocess.PIPE)
@@ -295,26 +309,34 @@ for dataclass in [ "disqualified", "lots_of_stars",  "native_or_nativelike",  "s
     #print (error)
     #print (output)
 
-    recipefilename = conf.tmp_dir + '/' + dataclass + '-32smoothed.recipe'
+    recipefilename = conf.tmp_dir + '/' + dataclass + '.recipe'
     recipefilehandle = open(recipefilename, 'w')
-    audiobasedir='/teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass
-    os.chdir(audiobasedir)
-    #for wav in output:
+    
+    #audiobasedir='/teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass
+    #os.chdir(audiobasedir)
+    
     wavcount=0
-    for wav in glob.glob("**/*.wav", recursive=True):
+    #for wav in glob.glob("**/*.wav", recursive=True):
+    wavlist = open('/u/62/rkarhila/unix/Dropbox/fysiak-gamedata/sorted/'+ dataclass + '.filelist' ,'r')
+    audiobasedir = '/u/62/rkarhila/unix/Dropbox/fysiak-gamedata/sorted/'
+    for wav in wavlist.readlines():
         wav = wav.strip()
         wavbase = os.path.basename(wav)[:-4]+'.phn'        
-        recipefilehandle.write ("audio=%s/%s transcript=%s age=?\n" % (audiobasedir,wav, aligndir+wavbase ))        
-        wavcount+=1
+        if os.path.exists(aligndir+  dataclass +'/' + wavbase): 
+            recipefilehandle.write ("audio=%s/%s transcript=%s age=?\n" % (audiobasedir,wav, aligndir+  dataclass +'/' + wavbase ))        
+            wavcount+=1
         #sys.stderr.write("\r%i" % wavcount)
         #sys.stderr.flush()
     print("Found %i utterances to %s" % (wavcount, recipefilename))
 
-    collections.append( { "name" : dataclass+"-32smoothed",
+    collections.append( { "name" : dataclass,
                           "recipe" : recipefilename,
                           "numlines" : wavcount,
                           "condition" : "mixed", 
                           "training" : False} )
+
+
+
 
 os.chdir(currdir)
 

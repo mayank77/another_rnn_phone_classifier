@@ -13,8 +13,8 @@
 noisefile=/teamwork/t40511_asr/c/noisex92/audio_wav/babble.wav
 noisedursamples=3763687
 
-tmpspeechfile=/dev/shm/speech.wav
-tmpnoisefile=/dev/shm/noise.wav
+tmpspeechfile=/dev/shm/speech.$RANDOM$RANDOM$RANDOM.wav
+tmpnoisefile=/dev/shm/noise.$RANDOM$RANDOM$RANDOM.wav
 
 sox $1 -t wav -r 16000 -c 1 -b 16 --encoding signed-integer $tmpspeechfile speed $3 norm $5
 

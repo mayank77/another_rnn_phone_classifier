@@ -10,8 +10,8 @@
 noisefile=/teamwork/t40511_asr/c/noisex92/audio_wav/volvo.wav
 noisedursamples=3763687
 
-tmpspeechfile=/dev/shm/noise.wav
-tmpnoisefile=/dev/shm/speech.wav
+tmpspeechfile=/dev/shm/noise.$RANDOM$RANDOM$RANDOM.wav
+tmpnoisefile=/dev/shm/speech.$RANDOM$RANDOM$RANDOM.wav
 
 
 sox -t raw -r 16000 -b 16 -e signed-integer $1 -t wav -r 16000 -c 1 -b 16 --encoding signed-integer $tmpspeechfile speed $3 norm $5
