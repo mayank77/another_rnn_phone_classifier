@@ -35,9 +35,9 @@ test_pickle_dir='../features/work_in_progress/'+test_corpus+'/pickles'
 logs_path = '../models/rnn512-e'
 LOG_DIR = logs_path
 
-checkpoint=48055
+checkpoint=58055 #48055
 
-EVAL_DIR = '../models/rnn512-e/testscores-%i/' % checkpoint
+EVAL_DIR = '../models/rnn512-e/testscores-clean_f-%i/' % checkpoint
 
 #
 # A function that will be useful:
@@ -65,17 +65,17 @@ znum_classes = 119 #traindata.num_classes
 
 traindata = None
 
-players_bad_data = phone_stash([ os.path.join(test_pickle_dir, 'disqualified_melbin36_and_f0_alldata.pickle2'),
+players_bad_data = phone_stash([ os.path.join(test_pickle_dir, 'disqualified-clean_f_melbin36_and_f0_alldata.pickle2'),
                              ], zmean=zmean, zstd=zstd, max_len=zmax_len)
 
-players_ok_data = phone_stash([ os.path.join(test_pickle_dir, 'some_stars_melbin36_and_f0_alldata.pickle2'),
+players_ok_data = phone_stash([ os.path.join(test_pickle_dir, 'some_stars-clean_f_melbin36_and_f0_alldata.pickle2'),
                             ], zmean=zmean, zstd=zstd, max_len=zmax_len)
 
-players_good_data =  phone_stash([ os.path.join(test_pickle_dir, 'lots_of_stars_melbin36_and_f0_alldata.pickle2'),
+players_good_data =  phone_stash([ os.path.join(test_pickle_dir, 'lots_of_stars-clean_f_melbin36_and_f0_alldata.pickle2'),
                                ], zmean=zmean, zstd=zstd, max_len=zmax_len)
 
 
-players_native_data =  phone_stash([ os.path.join(test_pickle_dir, 'native_or_nativelike_melbin36_and_f0_alldata.pickle2'),
+players_native_data =  phone_stash([ os.path.join(test_pickle_dir, 'native_or_nativelike-clean_f_melbin36_and_f0_alldata.pickle2'),
                                ], zmean=zmean, zstd=zstd, max_len=zmax_len)
 
 '''

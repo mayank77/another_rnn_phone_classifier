@@ -190,10 +190,10 @@ class_def = {
 
 #LOG_DIR='/tmp/tensorflow_logs/copy12-rnn384-d/'
 
-checkpoint=48055#20250
+checkpoint=58055#48055#20250
 
 LOG_DIR='../models/rnn512-e/'
-LOG_DIR += 'testscores-%i/' % checkpoint
+LOG_DIR += 'testscores-mce_b-%i/' % checkpoint
 
 prediction_files={ 'native' : LOG_DIR + "players_native_id_y_and_prediction",
                   'good': LOG_DIR + "players_good_id_y_and_prediction",
@@ -201,27 +201,31 @@ prediction_files={ 'native' : LOG_DIR + "players_native_id_y_and_prediction",
                   'bad': LOG_DIR + "players_bad_id_y_and_prediction" }
 
 
-test_corpus = "more_fysiak-gamedata-2-aligned_with_clean_f"
+test_corpus = "more_fysiak-gamedata-2-aligned_with_mc_b"
 test_pickle_dir='../features/work_in_progress/'+test_corpus+'/pickles'
 
-phone_pickles = { 'bad' : os.path.join(test_pickle_dir, 'disqualified_melbin36_and_f0_alldata.pickle2'),
-                  'ok' : os.path.join(test_pickle_dir, 'some_stars_melbin36_and_f0_alldata.pickle2'),
-                  'good' : os.path.join(test_pickle_dir, 'lots_of_stars_melbin36_and_f0_alldata.pickle2'),
-                  'native' : os.path.join(test_pickle_dir, 'native_or_nativelike_melbin36_and_f0_alldata.pickle2') }
+phone_pickles = { 'bad' : os.path.join(test_pickle_dir, 'disqualified-mc_b_melbin36_and_f0_alldata.pickle2'),
+                  'ok' : os.path.join(test_pickle_dir, 'some_stars-mc_b_melbin36_and_f0_alldata.pickle2'),
+                  'good' : os.path.join(test_pickle_dir, 'lots_of_stars-mc_b_melbin36_and_f0_alldata.pickle2'),
+                  'native' : os.path.join(test_pickle_dir, 'native_or_nativelike-mc_b_melbin36_and_f0_alldata.pickle2') }
 
 balancing = { 'bad' : 4,
               'ok' : 2,
               'good': 1,
               'native' : 2}
 
-bonuspoints = 2
+bonuspoints = 0
+lsq_bounds=[-4.99,9.99]
 
 points_per_phone = { 'bad' :-2 + bonuspoints,  #-2,
-                     'ok' : 1.5 + bonuspoints, # 2
-                     'good' : 4.5 + bonuspoints, # 5,
+                     'ok' : 2 + bonuspoints, # 2
+                     'good' : 5 + bonuspoints, # 5,
                      'native' : 6 + bonuspoints }# 7 }
 
-
+#points_per_phone = { 'bad' :0.7 + bonuspoints,  #-2,
+#                     'ok' : 2.8 + bonuspoints, # 2
+#                     'good' : 4.5 + bonuspoints, # 5,
+#                     'native' : 5.5 + bonuspoints }# 7 }
 
 prediction_array = []
 classes_array = []
@@ -230,9 +234,9 @@ classes_array = []
 numranks=7
 
 
-ranking_array = np.zeros([5034, 45*120+1])
-score_array = np.zeros([5034])
-speaker_array = np.zeros([5034])
+ranking_array = np.zeros([8611, 45*120+1])
+score_array = np.zeros([8611])
+speaker_array = np.zeros([8611])
 
 
 starts={}
@@ -244,6 +248,7 @@ uttcounter = 0
 speakers = {}
 speakercounter=0
 
+confusion_matrix=np.zeros([45,120])
 
 for category in ['native', 'good', 'ok', 'bad' ]:
     
@@ -295,18 +300,35 @@ for category in ['native', 'good', 'ok', 'bad' ]:
         if phone != "sil":
             [pre, phone, post] = re.split('\-|\+', phone)
             cl = class_def[phone]['class']
-            phonebase = cl * numranks
+            
+            if cl != classes[rowcounter]:
+                print("Something funny about data order!")
 
             guess = int(predictions[rowcounter])
 
             ranking_matrix[ cl, guess ] += 1
             phonecounter += 1
                 
+            if category == 'native':
+                confusion_matrix[cl, guess] += 1
+
         rowcounter+=1
     stops[category]=uttcounter-1
 
 
 print("Row: %i"%uttcounter)
+
+#diagonal5=np.ones([45])
+#for i in range(1,45):
+#    if confusion_matrix[i,i] > 1:
+#        diagonal5[i] = 5 / (confusion_matrix[i,i])
+
+#confusion_matrix = ( confusion_matrix * diagonal5.reshape([-1,1]) ) .reshape([-1])
+
+confusion_matrix[ np.where(confusion_matrix>0) ] = 5
+np.savetxt('/tmp/conf', confusion_matrix)
+confusion_matrix = confusion_matrix.reshape([-1])
+
 
 
 score_array = score_array[:uttcounter].reshape([-1,1])
@@ -340,25 +362,15 @@ for testround in range(12):
             
     print("Train samples: %i Test samples: %i" % (len(train_samples),len(test_samples)))
 
-    leave_one_out_train_ranking_array = scipy.sparse.coo_matrix(ranking_array[train_samples,:])
+    #leave_one_out_train_ranking_array = scipy.sparse.coo_matrix(ranking_array[train_samples,:])
+    #leave_one_out_train_ranking_array = ranking_array[train_samples,:]
+    leave_one_out_train_ranking_array = scipy.sparse.csr_matrix(ranking_array[train_samples,:])
     leave_one_out_train_score_array = score_array[train_samples].T.reshape([-1])
                                                                            
-    leave_one_out_test_ranking_array = scipy.sparse.coo_matrix(ranking_array[test_samples,:])
+    #leave_one_out_test_ranking_array = scipy.sparse.coo_matrix(ranking_array[test_samples,:])
+    leave_one_out_test_ranking_array = scipy.sparse.csr_matrix(ranking_array[test_samples,:])
+    #leave_one_out_test_ranking_array = ranking_array[test_samples,:]
     leave_one_out_test_score_array = score_array[test_samples]        
-
-    def my_least_squares_costfunc(x):
-        #return ((ranking_array * x.reshape([45,120])).sum(-1).sum(-1) - score_array.T).reshape([-1])
-        #return ((ranking_array * x).sum(-1) - score_array.T).reshape([-1])
-
-        costsum= np.abs((leave_one_out_train_ranking_array * x).sum(-1) - leave_one_out_train_score_array)
-        print (costsum.shape)
-
-        costsum -= 1
-        costsum[costsum<0] = 0
-        return costsum ** 2
-
-
-    #weights = least_squares(ranking_array, score_array, bounds=bounds)
 
 
     if os.path.isfile(os.path.join( LOG_DIR, 
@@ -367,8 +379,8 @@ for testround in range(12):
                                                                  'lsq_weights_%i'%testround)).reshape([-1])
     
     else:
-        
-        initguess = -0.2*np.random.rand(45,120)
+        '''
+        initguess =np.zeros([45,120])
 
         #print("initguess cost:")
         #print(my_costfunc(initguess))
@@ -377,21 +389,35 @@ for testround in range(12):
         for i in range(45):        
             #print("setting %i to random" % (i*numranks) )
             initguess[ i, i ] = 5
-
-        initguess=np.concatenate(([1],initguess.reshape([-1])))
+        '''
+        initguess=np.concatenate(([3],confusion_matrix))
 
         #print("initguess least_sq_cost.shape:")
         #print(my_least_squares_costfunc(initguess).shape)
 
-        lsq_bounds=[-1.99,9.99]
 
-        endcondition=0.01
+
+        endcondition=1e-3
+        max_num_eval=20
         #lsq_weights={'x':initguess}
 
         #lsq_res = optimize.least_squares(my_least_squares_costfunc, initguess, bounds=lsq_bounds, verbose=2, ftol=endcondition, xtol=endcondition)
-        lsq_res = optimize.lsq_linear(leave_one_out_train_ranking_array, leave_one_out_train_score_array, bounds=(-1.99, 9.99), method='trf', tol=1e-10)    
+        #lsq_res = optimize.lsq_linear(leave_one_out_train_ranking_array, leave_one_out_train_score_array, bounds=(-1.99, 9.99), method='trf', tol=1e-12)    
+
+        def costfunc(x):      
+            #print (leave_one_out_train_ranking_array.shape)
+            costsum = leave_one_out_train_ranking_array.dot( x )
+            costsum= np.abs( costsum - leave_one_out_train_score_array)
+            costsum -= 1.49
+            costsum[costsum<0.0] = 0.0
+            return costsum 
+
+            
+        lsq_res = optimize.least_squares(costfunc,initguess , xtol=endcondition, ftol=endcondition, max_nfev=max_num_eval, jac='2-point', loss="soft_l1", bounds=lsq_bounds, verbose=2)
 
         lsq_weights = lsq_res['x']
+
+        print( lsq_res['message'])
 
         '''
         lsq_bounds=[-0.99,2.99]
@@ -419,9 +445,7 @@ for testround in range(12):
     train_scores={}
 
     for category in ['native','good', 'ok', 'bad' ]:
-
         target_score =  points_per_phone[category]        
-
         leave_one_out_train_ranking_array = ranking_array[train_samples,:]
             
         if len(test_samples) > 0:
@@ -434,7 +458,7 @@ for testround in range(12):
             sub_test_samples = np.where(leave_one_out_test_score_array == target_score)[0]       
             #print (sub_test_samples)
             #print (leave_one_out_test_score_array[sub_test_samples])
-            scores[category]= (lsq_weight_array[testround,:] * leave_one_out_test_ranking_array[sub_test_samples,:]).sum(-1) -bonuspoints
+            scores[category]= (lsq_weight_array[testround,:] * leave_one_out_test_ranking_array[sub_test_samples,:]).sum(-1) - bonuspoints
      
             print("round %i test samples: %s\tmean: %0.2f\tstd: %0.2f" % (testround,
                                                                  category,
@@ -444,10 +468,14 @@ for testround in range(12):
             np.savetxt(os.path.join( LOG_DIR,
                                   'scores_lsq_%02i_category%s' % (testround, category)),  scores[category])
 
+    for category in ['native','good', 'ok', 'bad' ]:
+        target_score =  points_per_phone[category]        
+        leave_one_out_train_ranking_array = ranking_array[train_samples,:]
+
         sub_test_samples = np.where(leave_one_out_train_score_array == target_score)[0]       
         #print (sub_test_samples)
         #print (leave_one_out_train_score_array[sub_test_samples])
-        train_scores[category]= (lsq_weight_array[testround,:] * leave_one_out_train_ranking_array[sub_test_samples,:]).sum(-1) -bonuspoints
+        train_scores[category]= (lsq_weight_array[testround,:] * leave_one_out_train_ranking_array[sub_test_samples,:]).sum(-1) - bonuspoints
         
         m=np.mean(train_scores[category])
         st=np.std(train_scores[category])
@@ -459,10 +487,40 @@ for testround in range(12):
     all_scores.append(scores)
     
 if os.path.isfile(os.path.join(LOG_DIR, "lsq_weights")):
-    mean_lsq_weights = np.loadtxt(os.path.join(LOG_DIR, "lsq_weights"))
+    all_lsq_weights = np.loadtxt(os.path.join(LOG_DIR, "lsq_weights"))
+
+
 else:
-    mean_lsq_weights = np.mean(lsq_weight_array, axis=0)
-    np.savetxt(os.path.join(LOG_DIR, "lsq_weights"), mean_lsq_weights)
+    train_ranking_array = scipy.sparse.csr_matrix(ranking_array)
+    train_score_array = score_array.T.reshape([-1])
+
+    initguess=np.concatenate(([3],confusion_matrix))
+
+    #print("initguess least_sq_cost.shape:")
+    #print(my_least_squares_costfunc(initguess).shape)
+
+
+
+    endcondition=1e-3
+    max_num_eval=20
+        
+    def costfunc(x):      
+        #print (leave_one_out_train_ranking_array.shape)
+        costsum = leave_one_out_train_ranking_array.dot( x )
+        costsum= np.abs( costsum - leave_one_out_train_score_array)
+        costsum -= 1.49
+        costsum[costsum<0.0] = 0.0
+        return costsum 
+
+            
+    lsq_res = optimize.least_squares(costfunc,initguess , xtol=endcondition, ftol=endcondition, max_nfev=max_num_eval, jac='2-point', loss="soft_l1", bounds=lsq_bounds, verbose=2)
+
+
+    all_lsq_weights = lsq_res['x']
+
+    np.savetxt(os.path.join(LOG_DIR, "lsq_weights"), all_lsq_weights)
+
+
 
 scores={}
 for category in ['native', 'good', 'ok', 'bad' ]:        
@@ -472,7 +530,7 @@ for category in ['native', 'good', 'ok', 'bad' ]:
 
     test_ranking_array = ranking_array[test_samples]
     
-    scores[category]= (mean_lsq_weights * test_ranking_array).sum(-1)
+    scores[category]= (all_lsq_weights * test_ranking_array).sum(-1) - bonuspoints
     
     print("            All: %s\tmean: %0.2f\tstd: %0.2f" % (
                                                              category,

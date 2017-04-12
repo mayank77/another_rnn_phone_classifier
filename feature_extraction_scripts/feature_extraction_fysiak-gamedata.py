@@ -283,79 +283,73 @@ conf.class_def = {
 #   Data collection defitinions - train, dev and eval sets:
 #
 
-
-conf.corpus = "more_fysiak-gamedata-2-aligned_with_clean_f"
-conf.pickle_dir='../features/work_in_progress/'+conf.corpus+'/pickles'
-conf.statistics_dir = '../features/work_in_progress/'+conf.corpus+'/statistics/'
-
-mkdir(conf.pickle_dir)
-mkdir(conf.statistics_dir)
-
-# Do the align with:
-#
-# bash 03b-produce-alignments_batch_clean-c.sh
-#
-aligndir='/teamwork/t40511_asr/c/siak/fysiak_game_data/align_siak_clean_f/'
-
 collections=[]
-currdir=os.getcwd()
 
-# Produce file lists:
-for dataclass in ['some_stars']: # [ "disqualified", "lots_of_stars",  "native_or_nativelike",  "some_stars" ]:
-    #bashCommand = 'find /teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass + '/ -name "*.wav"'
-    
-    #process = subprocess.Popen(bashCommand.split(' '), stdout=subprocess.PIPE)
-    #output, error = process.communicate()
-    #print (error)
-    #print (output)
-
-    recipefilename = conf.tmp_dir + '/' + dataclass + '.recipe'
-    recipefilehandle = open(recipefilename, 'w')
-    
-    #audiobasedir='/teamwork/t40511_asr/c/siak/fysiak_game_data/dropbox_mirror/sorted/' + dataclass
-    #os.chdir(audiobasedir)
-    
-    wavcount=0
-    #for wav in glob.glob("**/*.wav", recursive=True):
-    wavlist = open('/u/62/rkarhila/unix/Dropbox/fysiak-gamedata/sorted/'+ dataclass + '.filelist' ,'r')
-    audiobasedir = '/u/62/rkarhila/unix/Dropbox/fysiak-gamedata/sorted/'
-    for wav in wavlist.readlines():
-        wav = wav.strip()
-        wavbase = os.path.basename(wav)[:-4]+'.phn'        
-        if os.path.exists(aligndir+  dataclass +'/' + wavbase): 
-            recipefilehandle.write ("audio=%s/%s transcript=%s age=?\n" % (audiobasedir,wav, aligndir+  dataclass +'/' + wavbase ))        
-            wavcount+=1
-        #sys.stderr.write("\r%i" % wavcount)
-        #sys.stderr.flush()
-    print("Found %i utterances to %s" % (wavcount, recipefilename))
-
-    collections.append( { "name" : dataclass,
-                          "recipe" : recipefilename,
-                          "numlines" : wavcount,
-                          "condition" : "mixed", 
-                          "training" : False} )
-
-
-
-
-os.chdir(currdir)
+#currdir=os.getcwd()
+#os.chdir(currdir)
 
 #conf.debug=True
 
 numcores=1
 batchid=0
 
-
 if len(sys.argv)>2:
     numcores=int(sys.argv[1])
     batchid=int(sys.argv[2])
 
+# Produce file lists:
 
 counter=1
-for collection in collections:
-    print("counter %i %s numcores %i == batchid %i?" % ( counter, "%s", numcores, batchid ) )
-    if (counter%numcores) == batchid:
-        extract_collection_and_save(conf, collection, training=False)
-    counter +=1
+        
+for modelname in ['clean_f']:  # 'mc_b' , 'clean_f']: 
+
+    conf.corpus = "more_fysiak-gamedata-2-aligned_with_%s" % modelname
+    conf.pickle_dir='../features/work_in_progress/'+conf.corpus+'/pickles'
+    conf.statistics_dir = '../features/work_in_progress/'+conf.corpus+'/statistics/'
+    
+    mkdir(conf.pickle_dir)
+    mkdir(conf.statistics_dir)
+    
+    # Do the align first with:
+    #
+    # bash 03b-produce-alignments_batch_clean-c.sh
+    #
+    
+    aligndir='/teamwork/t40511_asr/c/siak/fysiak_game_data/align_siak_%s/' % modelname
+    print ("Let's get alignments from %s" % aligndir)
+
+    for dataclass in [ "disqualified", "lots_of_stars",  "native_or_nativelike",  "some_stars" ]:
+
+        if (counter%numcores) == batchid:
+            
+
+            recipefilename = conf.tmp_dir + '/' + model + '_' + dataclass + '.recipe'
+            recipefilehandle = open(recipefilename, 'w')
+
+            wavcount=0
+
+            wavlistname = '/u/62/rkarhila/unix/Dropbox/fysiak-gamedata/sorted/'+ dataclass + '.filelist'
+
+            print ("Let's check our wave list %s" % wavlistname)
+
+            wavlist = open(wavlistname ,'r')
+            audiobasedir = '/u/62/rkarhila/unix/Dropbox/fysiak-gamedata/sorted/'
+
+            for wav in wavlist.readlines():
+                wav = wav.strip()
+                wavbase = os.path.basename(wav)[:-4]+'.phn'        
+                if os.path.exists(aligndir +'/' + wavbase): 
+                    recipefilehandle.write ("audio=%s/%s transcript=%s age=?\n" % (audiobasedir,wav, aligndir + '/' + wavbase ))        
+                    wavcount+=1
+
+            print("Found %i utterances to %s" % (wavcount, recipefilename))
+
+            extract_collection_and_save(conf, { "name" : "%s-%s" % (dataclass, modelname),
+                                        "recipe" : recipefilename,
+                                        "numlines" : wavcount,
+                                        "condition" : "mixed", 
+                                        "training" : False}, training=False)
+            
+        counter +=1
 
 
