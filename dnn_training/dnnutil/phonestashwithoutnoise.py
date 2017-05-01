@@ -23,6 +23,7 @@ class phone_stash:
     max_len = 0
     num_classes = 0
 
+    balancing_factor=0.2
     
     featdim=37
     usedim=[   0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,
@@ -65,7 +66,7 @@ class phone_stash:
 
     seed = 1000
     
-    def __init__(self, pickles_array, zmean=[], zstd=[], max_len=0, use_clean=False, show_samples=False):
+    def __init__(self, pickles_array, zmean=[], zstd=[], max_len=0, use_clean=False, show_samples=False, class_map=None, class_balancing=0.2):
 
         
         initial_num_items = 15000 * (1+len(pickles_array))
@@ -78,6 +79,8 @@ class phone_stash:
         self.lengths = np.zeros([initial_num_frames], dtype='uint32')
 
         self.fig = False
+
+        self.balancing_factor=class_balancing
 
         last_classindex = 0
         last_frameindex = 0
@@ -387,7 +390,7 @@ class phone_stash:
 
             diff = max_items_per_class - self.classcounts[i]
             
-            targetcount = math.floor(itemcount + 0.1*(diff))
+            targetcount = math.floor(itemcount + (self.balancing_factor * diff))
 
             tilingcount = math.ceil( targetcount/self.classcounts[i] )
 
