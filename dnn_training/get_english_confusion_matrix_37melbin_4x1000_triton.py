@@ -23,7 +23,11 @@ def confusion_matrix(p1,p2):
 from dnnutil import phonestashwithoutnoise as phonestash
 phone_stash = phonestash.phone_stash
 
-langtype="en_only"
+langtype="fi_only"
+
+
+# Which model checkpoint to use?
+checkpoint=6000 # 29478
 
 #
 #  Define training parameters:
@@ -72,7 +76,8 @@ test_pickle_dir='../features/melbin36_and_f0/'+test_corpus+'/pickles'
 
 
 
-train_files = [  os.path.join(en_pickle_dir, 'test_017f10nl_melbin36_and_f0_alldata.pickle2'),
+train_files = [
+os.path.join(en_pickle_dir, 'test_017f10nl_melbin36_and_f0_alldata.pickle2'),
                                os.path.join(en_pickle_dir, 'test_022m11bh_melbin36_and_f0_alldata.pickle2'),
                                os.path.join(en_pickle_dir, 'test_023m11nl_melbin36_and_f0_alldata.pickle2'),
                                os.path.join(en_pickle_dir, 'test_026f10nl_melbin36_and_f0_alldata.pickle2'),
@@ -239,50 +244,50 @@ train_files = [  os.path.join(en_pickle_dir, 'test_017f10nl_melbin36_and_f0_alld
                                os.path.join(en_pickle_dir, 'wavfiles_Participant6-_melbin36_and_f0_alldata.pickle2'),
                                os.path.join(en_pickle_dir, 'wavfiles_Participant7-_melbin36_and_f0_alldata.pickle2'),
                                os.path.join(en_pickle_dir, 'wavfiles_Participant8-_melbin36_and_f0_alldata.pickle2'),
-                               os.path.join(en_pickle_dir, 'wavfiles_Participant9-_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '001.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '002.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '003.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '004.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '005.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '006.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '007.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '008.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '009.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '010.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '011.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '012.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '013.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '014.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '015.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '016.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '017.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '018.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '019.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '020.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '021.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '022.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '023.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '024.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '025.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '026.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '027.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '028.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '029.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '030.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '031.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '032.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '033.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '034.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '035.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '036.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '037.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '038.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '039.recipe_melbin36_and_f0_alldata.pickle2'),
-                               # os.path.join(fi_pickle_dir, '040.recipe_melbin36_and_f0_alldata.pickle2'),
-                          ]
+                               os.path.join(en_pickle_dir, 'wavfiles_Participant9-_melbin36_and_f0_alldata.pickle2')
+    # os.path.join(fi_pickle_dir, '001.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '002.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '003.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '004.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '005.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '006.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '007.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '008.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '009.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '010.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '011.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '012.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '013.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '014.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '015.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '016.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '017.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '018.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '019.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '020.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '021.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '022.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '023.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '024.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '025.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '026.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '027.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '028.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '029.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '030.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '031.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '032.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '033.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '034.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '035.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '036.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '037.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '038.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '039.recipe_melbin36_and_f0_alldata.pickle2'),
+    # os.path.join(fi_pickle_dir, '040.recipe_melbin36_and_f0_alldata.pickle2'),
+]
 
-
+'''
 eval_uk_files = [ os.path.join(en_pickle_dir, 'test_001m10nl_melbin36_and_f0_alldata.pickle2'),
                                  os.path.join(en_pickle_dir, 'test_002m10nl_melbin36_and_f0_alldata.pickle2'),
                                  os.path.join(en_pickle_dir, 'test_003m10bh_melbin36_and_f0_alldata.pickle2'),
@@ -327,13 +332,14 @@ players_good_files = [ os.path.join(test_pickle_dir, 'lots_of_stars-mc_b_melbin3
 
 players_native_files = [ os.path.join(test_pickle_dir, 'native_or_nativelike-mc_b_melbin36_and_f0_alldata.pickle2'),
                                  ]
-
+'''
 
 
 
 #Specify where to keep log file:
 logs_path = '../models/%s-rnn%ix%i-learningrate%0.5f-dropout%0.1f-classbalance%0.1f-triton-a' % (langtype, num_layers, rnn_size, learning_rate, dropoutval, class_balancing)
 LOG_DIR=logs_path
+modelfile=os.path.join(LOG_DIR, 'model2.ckpt-%i' % checkpoint) #model2.ckpt-31069')
 
 
 #
@@ -349,7 +355,7 @@ def mkdir(path):
 
 mkdir(logs_path)
 
-logfile = open(os.path.join(logs_path, "training_log"), 'w')
+logfile = open(os.path.join(logs_path, "confusion_log"), 'w')
 
 def print_to_log(text):
     print (text)
@@ -381,11 +387,15 @@ print_to_log("%s:\t%0.2f" % ("\nclass balancing factor", class_balancing))
    
 # # 0 Load data #
 
+zmean = np.loadtxt( os.path.join(logs_path, "traindata.mean" )) #traindata.mean
+zstd = np.loadtxt( os.path.join(logs_path, "traindata.std" ))# traindata.std
+zmax_len = 62#traindata.max_len
 
-traindata = phone_stash(train_files, class_map=class_map, class_balancing=class_balancing)
+traindata = phone_stash(train_files, class_map=class_map, class_balancing=class_balancing, zmean=zmean, zstd=zstd, max_len=zmax_len)
 print_to_log("\nTraining data:")
 print_to_log('\n'.join(train_files))
 
+'''
 eval_uk_data = phone_stash(eval_uk_files, zmean=traindata.mean, zstd=traindata.std, max_len=traindata.max_len, class_map=class_map)
 print_to_log("\nEval uk data:")
 print_to_log('\n'.join(eval_uk_files))
@@ -409,10 +419,10 @@ print_to_log('\n'.join(players_good_files))
 players_native_data =  phone_stash(players_native_files, zmean=traindata.mean, zstd=traindata.std, max_len=traindata.max_len, class_map=class_map)
 print_to_log("\nPlayers native data:")
 print_to_log('\n'.join(players_native_files))
-    
+'''    
     
 
-for stash in [traindata, eval_uk_data,  eval_fi_data, players_bad_data, players_ok_data,  players_good_data, players_native_data]:
+for stash in [traindata]: #, eval_uk_data,  eval_fi_data, players_bad_data, players_ok_data,  players_good_data, players_native_data]:
     stash.usedim = np.arange(1,37)
     stash.featdim = 36
 
@@ -425,10 +435,10 @@ print_to_log("%s:\t%i" % ("number of classes", n_classes))
 
 
 
-np.savetxt(os.path.join(logs_path, "traindata.std"), traindata.std)
-np.savetxt(os.path.join(logs_path, "traindata.mean"), traindata.mean)
-np.savetxt(os.path.join(logs_path, "traindata.num_classes"), np.array([traindata.num_classes]))
-np.savetxt(os.path.join(logs_path, "traindata.max_len"), np.array([traindata.max_len]))
+#np.savetxt(os.path.join(logs_path, "traindata.std"), traindata.std)
+#np.savetxt(os.path.join(logs_path, "traindata.mean"), traindata.mean)
+#np.savetxt(os.path.join(logs_path, "traindata.num_classes"), np.array([traindata.num_classes]))
+#np.savetxt(os.path.join(logs_path, "traindata.max_len"), np.array([traindata.max_len]))
 
 
 print_to_log("\n\nMax train seq. length: %i" % train_len)
@@ -442,9 +452,10 @@ print_to_log("\n\nMax train seq. length: %i" % train_len)
 # Print class counts:
 
 print ("class train% test%")
-
+'''
 for i in range(1, traindata.num_classes+1):
     traincount=np.where(traindata.classes==i)[0].shape[0]
+    
     testukcount=np.where(eval_uk_data.classes==i)[0].shape[0]
     testficount=np.where(eval_fi_data.classes==i)[0].shape[0]
     playersbadcount=np.where(players_bad_data.classes==i)[0].shape[0]
@@ -476,6 +487,7 @@ for i in range(1, traindata.num_classes+1):
                                                            "%"
                                                        ))
 
+'''
 
 # In[4]:
 
@@ -561,6 +573,9 @@ def recurrent_neural_network(x, keep_prob):
 
     return tf.matmul(tf.concat(1,[first,last]) , layer['weights']) + layer['biases']
 
+
+
+
 #weights = {
 #    'weight1': tf.Variable(tf.random_normal([2*rnn_size ,n_classes])),
 #    'bias1' : tf.Variable(tf.random_normal([n_classes]))
@@ -610,7 +625,15 @@ acc = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
 acc = tf.reduce_mean(tf.cast(acc, tf.float32))
 
 
+[ train_sample_x, 
+  train_sample_y, 
+  num_items, 
+  train_sample_len, 
+  train_sample_x_len, 
+  train_sample_keys ] = traindata.next_batch( traindata.num_examples ) 
 
+
+'''
 [ eval_uk_x, 
   eval_uk_y, 
   eval_uk_items, 
@@ -664,7 +687,7 @@ acc = tf.reduce_mean(tf.cast(acc, tf.float32))
   players_native_len, 
   players_native_x_len,
   players_native_keys  ] = players_native_data.next_batch( players_native_data.num_examples  ) 
-
+'''
 
 # Initializing the variables
 init = tf.global_variables_initializer() #initialize_all_variables()
@@ -690,70 +713,29 @@ balanced_accuracy_placeholder = tf.placeholder(tf.float32, name="balanced_test_a
 balanced_test_summary = tf.summary.scalar("accuracy", balanced_accuracy_placeholder)
 
 # Retrieve just the LSTM variables.
-model_saver = tf.train.Saver(max_to_keep=None)
+
 
 with tf.Session() as sess:
-    #sess.run(tf.initialize_all_variables())
-    sess.run(init)
-
-    # op to write logs to Tensorboard
-    summary_writer = tf.summary.FileWriter(logs_path+ '/train', graph=tf.get_default_graph())
+    #sess.run(init)
 
 
-    train_sample_writer = tf.summary.FileWriter(logs_path+ '/train-sample')
-    eval_uk_writer      = tf.summary.FileWriter(logs_path+ '/eval_uk')
-    eval_fi_writer      = tf.summary.FileWriter(logs_path+ '/eval_fi')
-    players_bad_writer  = tf.summary.FileWriter(logs_path+ '/players_bad')
-    players_ok_writer   = tf.summary.FileWriter(logs_path+ '/players_ok')
-    players_good_writer = tf.summary.FileWriter(logs_path+ '/players_good')
-    players_native_writer = tf.summary.FileWriter(logs_path+ '/players_native')
+    #prediction = recurrent_neural_network(x, keep_prob)
+
+    print("Init saver with meta graph")
+    restorer = tf.train.Saver(tf.global_variables())
+    restorer.restore(sess, modelfile)
+    print("Done!")
 
 
-    test_embedding_writer = tf.summary.FileWriter(logs_path+ '/test-embed')        
-
-    balanced_train_sample_writer = tf.summary.FileWriter(logs_path+ '/balanced_train-sample')
-    balanced_eval_uk_writer      = tf.summary.FileWriter(logs_path+ '/balanced_eval_uk')
-    balanced_eval_fi_writer      = tf.summary.FileWriter(logs_path+ '/balanced_eval_fi')
-    balanced_players_bad_writer  = tf.summary.FileWriter(logs_path+ '/balanced_players_bad')
-    balanced_players_ok_writer   = tf.summary.FileWriter(logs_path+ '/balanced_players_ok')
-    balanced_players_good_writer = tf.summary.FileWriter(logs_path+ '/balanced_players_good')
-    balanced_players_native_writer = tf.summary.FileWriter(logs_path+ '/balanced_players_native')
 
 
-    #train_x, train_y = traindata.next_batch(traindata.num_examples)                 
-    correct = tf.equal(tf.argmax(prediction, 1), tf.argmax(y, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct, 'float'))
-
-    traindata.next_balanced_round()
-    #total_batch = math.ceil(traindata.balanced_data_size/batch_size)
-    total_batch = math.ceil((traindata.balanced_data_order.shape[0])/batch_size)
-
-    starttime = datetime.datetime.now()
-
-    print_to_log("")
-    print_to_log("Start training at %s (uptime: %s)" % (datetime.datetime.now(), (datetime.datetime.now() - starttime)))
-
-    global_batch_counter=-1
-    for epoch in range(hm_epochs):
-        
-        epoch_loss = 0
-        for i in range(total_batch):
-            global_batch_counter += 1    
-            if ( (global_batch_counter) % 2000 == 0):
-
-                save_path = model_saver.save(sess, os.path.join(logs_path, 'model2.ckpt'), (global_batch_counter))
-
-                print_to_log("Saved model parametres to %s at %s (uptime: %s)" % (save_path, datetime.datetime.now(), (datetime.datetime.now() - starttime)))
-                #sys.stderr.write("\nSaved model parameters to %s\n" % save_path) 
-
-
-                for tests in [ [ "train_sample", train_sample_x, train_sample_y, train_sample_keys, train_sample_writer, balanced_train_sample_writer],
-                               [ "eval_uk", eval_uk_x, eval_uk_y, eval_uk_keys, eval_uk_writer, balanced_eval_uk_writer],
-                               [ "eval_fi", eval_fi_x, eval_fi_y, eval_fi_keys, eval_fi_writer, balanced_eval_fi_writer ],
-                               [ "players_bad", players_bad_x, players_bad_y, players_bad_keys, players_bad_writer, balanced_players_bad_writer ],
-                               [ "players_ok", players_ok_x, players_ok_y, players_ok_keys,players_ok_writer, balanced_players_ok_writer ],
-                               [ "players_good", players_good_x, players_good_y, players_good_keys, players_good_writer, balanced_players_good_writer ],
-                               [ "players_native", players_native_x, players_native_y, players_native_keys, players_native_writer, balanced_players_native_writer ] ]:
+    for tests in [ [ "english_train_data", train_sample_x, train_sample_y, train_sample_keys] ]:
+                   #[ "eval_uk", eval_uk_x, eval_uk_y, eval_uk_keys, eval_uk_writer, balanced_eval_uk_writer],
+                   ## [ "eval_fi", eval_fi_x, eval_fi_y, eval_fi_keys, eval_fi_writer, balanced_eval_fi_writer ],
+                   #[ "players_bad", players_bad_x, players_bad_y, players_bad_keys, players_bad_writer, balanced_players_bad_writer ],
+                   #[ "players_ok", players_ok_x, players_ok_y, players_ok_keys,players_ok_writer, balanced_players_ok_writer ],
+                   #[ "players_good", players_good_x, players_good_y, players_good_keys, players_good_writer, balanced_players_good_writer ],
+                   #[ "players_native", players_native_x, players_native_y, players_native_keys, players_native_writer, balanced_players_native_writer ] ]:
 
                     testname = tests[0]
                     test_x = tests[1]
@@ -809,15 +791,19 @@ with tf.Session() as sess:
 
                             confmatrix[:cf.shape[0],:cf.shape[1]] += cf
 
-                    np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_confusion_matrix' % (global_batch_counter, testname)),
+                            np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_confusion_matrix_work_in_progress' % (checkpoint, testname)),
+                                       confmatrix,
+                                       fmt='%i',)
+
+                    np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_confusion_matrix' % (checkpoint, testname)),
                                confmatrix,
                                fmt='%i',)
 
-                    np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_id_y_and_prediction' % (global_batch_counter, testname)),
+                    np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_id_y_and_prediction' % (checkpoint, testname)),
                                predictions,
                                fmt='%i',)
 
-                    np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_id_y_and_activations' % (global_batch_counter, testname)),
+                    np.savetxt(os.path.join(LOG_DIR, 'cp%i_%s_id_y_and_activations' % (checkpoint, testname)),
                                activations,
                                fmt='%i',)
 
@@ -832,7 +818,7 @@ with tf.Session() as sess:
 
                     #print ("\r all: %0.2f balanced: %0.2f %s" % (biased_performance, balanced_performance, testname))
 
-
+                    '''
                     test_writer = tests[4]
                     balanced_test_writer = tests[5]
 
@@ -847,9 +833,11 @@ with tf.Session() as sess:
                                                       feed_dict={
                                                           balanced_accuracy_placeholder: balanced_performance })
 
-                    test_writer.add_summary(summarytensor, global_batch_counter )
-                    balanced_test_writer.add_summary(balanced_summarytensor, global_batch_counter )
+                    test_writer.add_summary(summarytensor,  epoch * total_batch + i )
+                    balanced_test_writer.add_summary(balanced_summarytensor,  epoch * total_batch + i )
 
+                    '''
+                    
                     '''
                     # Write [EMB, np.argmax(eval_y) ]to file!
                     np.savetxt(os.path.join(LOG_DIR, '%s_y_and_prediction.%i' % (testname, epoch * total_batch + i)),
@@ -869,118 +857,4 @@ with tf.Session() as sess:
                     print_to_log("Acc: %0.2f/%0.2f balanced, Test: %s" % (biased_performance, balanced_performance, testname) )
 
 
-                print_to_log("Resume training at %s (uptime: %s)\n" % (datetime.datetime.now(), (datetime.datetime.now() - starttime)))
-
-
-
-            [epoch_x, 
-             epoch_y, 
-             num_items, 
-             batch_len, 
-             epoch_x_len,
-             epoch_keys ] = traindata.next_balanced_batch(batch_size)
-
-            if batch_len == 0:
-                continue
-            _, c, summary = sess.run([optimizer, cost,  merged_summary_op], 
-                                         feed_dict={x: epoch_x, 
-                                                    y: epoch_y, 
-                                                    keep_prob: dropoutval})
-            summary_writer.add_summary(summary, global_batch_counter)
-            epoch_loss += c
-
-            sys.stderr.write("\rEpoch %i %0.2f%s (global batch %i, epoch batch count: %i) " % 
-                             ( epoch, (i+1)/total_batch*100 ,
-                               "%", 
-                               global_batch_counter, 
-                               total_batch 
-                               #traindata.balanced_data_order.shape[0]/batch_size
-                           ))
-
-
-        traindata.next_balanced_round()    
-        print_to_log("")
-        print_to_log('Epoch %i completed out of %i loss: %0.2f' % (epoch, hm_epochs, epoch_loss))
-
-
-
-
-
-
-with tf.Session() as sess2:
-    #sess.run(init)
-
-
-    prediction = recurrent_neural_network(x, keep_prob)
-
-
-
-    LOG_DIR = logs_path
-    EVAL_DIR = './dnnscores_copy12-rnn384/'
-
-    modelfile=os.path.join(LOG_DIR, 'model2.ckpt-0') #model2.ckpt-31069')
-    my_meta = modelfile+".meta"
-
-
-    print_to_log("Init saver with meta graph")
-    restorer = tf.train.Saver(tf.global_variables())
-    restorer.restore(sess, modelfile)
-    print_to_log("Done!")
-
-
-    for tests in [ [ "players_bad", players_bad_x, players_bad_y ],
-                   [ "players_ok", players_ok_x, players_ok_y ],
-                   [ "players_good", players_good_x, players_good_y],
-                   [ "players_native", players_native_x, players_native_y ] ]:
-
-        testname = tests[0]
-        test_x = tests[1]
-        test_y = tests[2]
-
-        print_to_log("Let's get summary for %s" % testname)
-
-
-        # Sample of test data:              
-        EMB = sess2.run([ accuracy, 
-                                       prediction ], 
-                                     feed_dict={ x: test_x, 
-                                                 y: test_y, 
-                                                 keep_prob: 1 })
-
-        print (acc)
-        print (np.where(  (np.argmax(test_y, 1) - np.argmax(EMB,1))==0)[0].shape[0]/test_x.shape[0])
-
-        '''
-        # Write [EMB, np.argmax(eval_y) ]to file!
-        np.savetxt(os.path.join(EVAL_DIR, '%s_y_and_prediction.%i' % (testname, epoch * total_batch + i)),
-                   np.vstack((np.argmax(test_y, 1), 
-                              np.argmax(EMB,1))).T.astype(int), 
-                   fmt='%i',)
-
-        #print_to_log(np.argmax(test_y, 1).reshape([-1,1]).shape)
-        #print_to_log(EMB.shape)
-
-        np.savetxt(os.path.join(EVAL_DIR, '%s_y_and_posterior.%i' % (testname, epoch * total_batch + i)),
-                   np.hstack( 
-                       (np.argmax(test_y, 1).reshape([-1,1]), 
-                        EMB )
-                   ), fmt='%0.2f',)
-
-        '''
-
-
-
-
-
-
-
-
-
-
-
-
-# In[ ]:
-
-print_to_log(y_true[1:10])
-print_to_log(y_pred[1:10])
 
