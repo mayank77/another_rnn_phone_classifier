@@ -1,0 +1,4 @@
+#
+# 1. copy phones.ctm from wherever it to kaldi_labels directory 
+# 2. Specify audio location in 03-make-recipes.sh
+# 3. run steps 01, 02 and 03

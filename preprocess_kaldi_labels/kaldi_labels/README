@@ -1,0 +1,17 @@
+
+
+copy the phoneme level alignment of the training data from wherever it is here. 
+Scripts work with ctm format so provice phones.ctm. While you are at is, you can
+also try creating a tra file, it might be convenien later!
+
+You can generate that file with the ali-to-phones command after 'module load kaldi'. E.g. 
+
+ali-to-phones --ctm-output tri4a/final.mdl "ark:gunzip -c tri4a_ali_train/ali.*.gz|" phones.ctm 
+
+# to get them in the ctm format (with timestamps) or 
+
+ali-to-phones --per-frame tri4a/final.mdl "ark:gunzip -c tri4a_ali_train/ali.*.gz|" ark,t:phones.tra 
+
+# to get a sequence of phone indexes for each frame. 
+
+
