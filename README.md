@@ -5,11 +5,28 @@ Yet another reboot of the phone classifier for kids' language learning game.
 ## Dependencies
 
 * SPTK
-* Tensor Flow 0.10.?
+* Tensor Flow rc 0.12
 
-Easiest in anaconda. My conda env is called tensorflow3 and I activate it with command '''source activate tensorflow3'''. 
+Easiest in anaconda3. My conda env is called tensorflow3 and I activate it with command '''source activate tensorflow3'''. 
 
 Just sayin'.
+
+## Workflow
+
+This is research code and things might change suddenly when we find better ways to do what has to be done.
+
+The basic workflow is always the same though:
+* Gather your data and divide into train, devel and test.
+* Align phonetic transcriptions to audio.
+* Define recipe files where each line defines audio and aligned transcription files like this:
+```
+audio=/data/corpora/pf-star/data/004m04bh/pfstartrain004m04bh_digits4.0.wav transcript=/data/corpora/pf-star/align-siak_clean_f/pfstartrain004m04bh_digits4.0.phn age=?
+```
+* Run the feature extraction scripts: Add noise, extract features, pack into pickles.
+* Build a classifier on the training data
+* Run the classifier on test data
+* Using 10-fold cross-validation, compute scoring matrices for the test data.
+* Set up a TCP service for scoring phone segments
 
 ```
 +--------------------------------------------------------+
@@ -114,7 +131,9 @@ Just sayin'.
                             |
                             |
 +---------------------------+----------------------------+
+|   If you're happy with the scoring performance,        |
 |   Set up scoring service in TCP port                   |
 |   serving/serve.sh                                     |
 +--------------------------------------------------------+
 ```
+
