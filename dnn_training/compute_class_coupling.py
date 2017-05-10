@@ -14,32 +14,32 @@ def confusion_matrix(p1,p2):
     return cf
 
 
-#statfile='/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier//models/rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.5-triton-a/cp28109_en_uk_id_y_and_prediction'
+#statfile='/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier//models/rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.0-triton-a/cp28109_en_uk_id_y_and_prediction'
 
 
 
 
-ref1=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/en_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.5-triton-a/cp10000_eval_uk_confusion_matrix')
+ref1=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/en_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.0-triton-a/cp34000_eval_uk_confusion_matrix')
 
 sum_r1=ref1.sum(1)
 sum_r1[sum_r1==0]=1
 norm_ref1=(ref1.T/sum_r1.T).T
 
 
-cf1=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/en_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.5-triton-a/cp10000_finnish_train_data_confusion_matrix_work_in_progress')
+cf1=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/en_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.0-triton-a/cp34000_finnish_train_data_confusion_matrix_work_in_progress')
 
 sum_m1=cf1.sum(1)
 sum_m1[sum_m1==0]=1      
 norm_m1=(cf1.T/sum_m1.T).T
 
 
-ref2=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/fi_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.5-triton-a/cp26000_eval_fi_confusion_matrix')
+ref2=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/fi_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.0-triton-a/cp34000_eval_fi_confusion_matrix')
 
 sum_r2=ref2.sum(1)
 sum_r2[sum_r2==0]=1
 norm_ref2=(ref2.T/sum_r2.T).T
 
-cf2=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/fi_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.5-triton-a/cp26000_english_train_data_confusion_matrix_work_in_progress')
+cf2=np.loadtxt('/m/triton/scratch/work/rkarhila/another_rnn_phone_classifier/models/fi_only-rnn4x1000-learningrate0.00050-dropout0.6-classbalance0.0-triton-a/cp34000_english_train_data_confusion_matrix_work_in_progress')
 
 sum_m2=cf2.sum(1)
 sum_m2[sum_m2==0]=1      
@@ -64,7 +64,7 @@ np.savetxt('/tmp/conf', cf)
 np.savetxt('/tmp/confnorm1', norm_m1)
 np.savetxt('/tmp/confnorm2', norm_m2)
 
-threshold = 0.3
+threshold = 0.4
 
 
 for i in range(46):
