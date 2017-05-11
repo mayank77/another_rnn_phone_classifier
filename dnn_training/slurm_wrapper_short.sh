@@ -19,5 +19,5 @@ source activate tensorflow3
 ## run my GPU accelerated executable with --gres
 ## srun --gres=gpu:teslak80:1 
 
-python get_english_confusion_matrix_37melbin_4x1000_triton.py
-#python get_finnish_confusion_matrix_37melbin_4x1000_triton.py
+#python get_english_confusion_matrix_37melbin_4x1000_triton.py
+python get_finnish_confusion_matrix_37melbin_4x1000_triton.py

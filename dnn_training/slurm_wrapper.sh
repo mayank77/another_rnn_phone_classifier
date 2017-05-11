@@ -19,5 +19,7 @@ source activate tensorflow3
 ## run my GPU accelerated executable with --gres
 ## srun --gres=gpu:teslak80:1 
 
+python rnn_training_37melbin_4x1000_triton-2-two_languages_and_map_threshold0.3_balance0.tmp.py
+
 #python rnn_training_37melbin_4x1000_triton-2-only-finnish.py
-python rnn_training_37melbin_4x1000_triton-2-only-english.py
+#python rnn_training_37melbin_4x1000_triton-2-only-english.py
