@@ -127,7 +127,7 @@ conf.statistics_handle = ""
 # In[453]:
 
 
-conf.vowels = ['a','A','å','Å','ä','Ä','e','E','f','i','I','o','O','ö','u','U']
+conf.vowels = ['a','A','å','Å','ä','Ä','e','E','i','I','o','O','ö','u','U']
 
 conf.nonvow = ['b','C','d','D','g','H','j','J','k','l','m','n','N','p','P','Q','r','R','s','S','t','T','v','w','W','Y','z','Z']
 
