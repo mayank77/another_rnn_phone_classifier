@@ -53,48 +53,174 @@ extract_collection_and_save = preprocessing.extract_collection_and_save
 
 
 class extract_config:
+
+    ## boolean debug
+    # Output lots of progress information on screen:
     debug = False
+
+    ## dictionary preprocessing_scipts
+    # A list of preprocessing scripts; Each audio file will be preprocessed with
+    # a randomly selected preprocessing script, which will normalise audio by 
+    # peak value and convert it into standard format readable by the next
+    # script, possibly adding noise or degrading the signal somehow while doing
+    # that.
     preprocessing_scipts = {}
+
+    ## string feature_extraction_script
+    # This is 
     feature_extraction_script = ""
+
+    ## string featuretype
+    # A descriptor that is only used to name the file where features are saved.
     featuretype = ""
-    quality_control_wavdir = ""
-    statistics_handle = ""
-    vowels = []
-    nonvow = []
-    combinations = []
-    used_classes = []
-    classes_name = ""
+
+
+    
     datatypelength = -1
+
+    ## int audio_fs
+    # sampling rate of data used
     audio_fs = -1
-    progress_length = -1
-    max_num_samples=-1
+
+    ## int max_num_classes
+    # Basically the class count for the data ie. the maximum
+    # class index (+1) in the data
     max_num_classes =-1
+
+    ## int feature_dimension
+    # Dimensionality of the features (For example 37 for the 36 Mel-banks +f0)
     feature_dimension=-1
 
-
+    ## int feature_fs
+    # Sampling rate for feature extractor - The preprocessor should output data
+    # in this fs (8kHz in the 36 Mel-bank example)
     feature_fs = -1
+
+    ## int fs
+    # fs of source data (often 16kHz)
     fs = -1
+
+    ## int frame_length
+    # frame length for feature extraction     
     frame_length = -1 
+
+    ## int frame_step
+    # frame step for feature extraction        
     frame_step = -1
+
+    ## int frame_leftovers
+    # How much longer frame is compared to frame step.
+    # Usually computed from lenght and step
     frame_leftovers = -1 
     
+    ## int max_num_frames
+    # A limit on how long a segment can be (in frames). Anything longer will be
+    # cropped or discarded (depending on feature extraction script version)
     max_num_frames=-1
+
+    ## int max_phone_length
+    # A limit on how long a segment can be (in samples). Anything longer will be
+    # cropped or discarded (depending on feature extraction script version)
+    # Should be computed from max_num_frames and frame length
     max_phone_length=-1
-    max_num_monoclasses = -1
-    
-    assigned_num_samples=100
-    
+
+
+
+    ## int discard_counter
+    # A place to store count of discarded phones
     discard_counter=0
+
+    ## int tmpfilecounter
+    # A place to store count of tmp files (is it still used?)
     tmpfilecounter = 0
+
+    ## string tmp_dir
+    # A place where to create tmp files
     tmp_dir="/tmp/"
 
+    ## dictionary class_def
+    # A very important map from phone name (in alignment files) to a class number 
+    # for training and operating the DNN classifier.
     class_def={}
+
+    ## string corpus
+    # The name of the corpus
     corpus = ""
+
+    ## string pickle_dir
+    # Location (ie. directoiy) where features will be saved
     pickle_dir=''
+
+    ## string statistics_dir
+    # Location (ie. directoiy) where statistics of phone segments were 
+    # saved (not saved anymore, I think)
     statistics_dir = ''
     
+    ## int lastframeindex
+    # Used in bookkeeping in the extraction process. Is it still used?
     lastframeindex = 0
-    extraframes = 4
+
+    ## int extraframes
+    # Number of frames borrowed from phones before and after the phone itself
+    # to give a little bit of context for the classifier to use
+    extraframes = 5
+
+
+
+
+
+    ### The following seem to be deprecated (May 15 2017) ###
+
+    ## string quality_control_wavdir 
+    # Deprecated: All the audio bits of different classes used to be saved so
+    # the developer could listen if correct bits of audio where put into right
+    # classes. Now it is easier to plot the features to do the same check.
+    quality_control_wavdir = ""
+
+    ## string statistics_handle
+    # Deprecated: Used to be filename (or handle?) where statistics of segment
+    # lenghts were saved.
+    statistics_handle = ""
+
+    ## array vowels
+    # Deprecated: List of vowels used in data
+    vowels = []
+
+    ## array nonvowels
+    # Deprecated: List of consonants used in data
+    nonvow = []
+
+    ## array combinations
+    # Deprecated: List of allowed phoneme merges in data
+    combinations = []
+
+    ## array used_classes
+    # Deprecated? List of classes that are present in data
+    used_classes = []
+
+    ## string classes_name
+    # Deprecated? What on earth was this?
+    classes_name = ""
+
+    ## int progress_length
+    # Deprecated: used to display progress of processing
+    progress_length = -1
+
+    ## int max_num_samples
+    # An upper limit of samples for an individual segment
+    # (deprecated?)
+    max_num_samples=-1
+
+    ## int max_num_monoclasses
+    # Deprecated: (What did this do earlier?)
+    max_num_monoclasses = -1
+    
+    ## int assigned_num_samples
+    # Deprecated: (What did this do earlier?)   
+    assigned_num_samples=100
+    
+
+
     
 
     def __init__(self):
