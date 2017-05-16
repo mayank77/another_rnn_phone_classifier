@@ -106,7 +106,10 @@ class phone_stash:
                 print ("\nNeed more frames!\n")
                 #self.data = np.concatenate ( ( self.data, np.zeros([initial_num_frames,self.featdim], dtype='float32') ) )
 
-            self.classes[last_classindex:last_classindex+datacount] = data_and_classes["classes"][:datacount]
+            if class_map:
+                self.classes[last_classindex:last_classindex+datacount] = list(map(lambda x: class_map[x], data_and_classes["classes"][:datacount]))
+            else:
+                self.classes[last_classindex:last_classindex+datacount] = data_and_classes["classes"][:datacount]
             self.lengths[last_classindex:last_classindex+datacount] = data_and_classes["lengths"][:datacount]
             self.indices[last_classindex:last_classindex+datacount,:] = data_and_classes["indices"][:datacount,:] + last_frameindex
             

@@ -27,7 +27,7 @@ langtype="en_only"
 
 
 # Which model checkpoint to use?
-checkpoint=6000 # 29478
+checkpoint=34000 # 29478
 
 #
 #  Define training parameters:
@@ -59,7 +59,7 @@ dropoutval=0.6
 # Compensate data unbalance by repeating data from less frequent classes in training
 # 0.0 = No compensation at all
 # 1.0 = Full compensation, identical count of data from all classes in one epoch  
-class_balancing = 0.5
+class_balancing = 0.0
 
 n_hidden = rnn_size
 
