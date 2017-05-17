@@ -339,7 +339,8 @@ print ('using tmp dir %s' % conf.tmp_dir)
 
 conf.labeltype = "aaltolike-stateless"
 
-
+'''
+Old Manual Way
 conf.class_def = {
 u'sil' : { "class" : 45},
 u'a' : { "class" : 46},
@@ -416,7 +417,21 @@ u'yi' : { "class" : 116},
 u'yö' : { "class" : 117},
 u'yy' : { "class" : 118},
 }
+'''
 
+'''
+#class_def.txt used below contains each definition line by line ex.
+sil
+a
+ä
+'''
+start=45
+conf.class_def={}
+with open("class_def.txt") as defn: #class_def.txt contains each definition line by line ex. 
+	content = defn.readlines()
+	for class_def_phoneme in content:
+		conf.class_def.update({str(class_def_phoneme.strip()) : {'class' : start}}) #Python 3 renamed the unicode type to str
+		start=start+1
 
 # ##  Dataset definitions ##
 # *In a very awkward manner, we'll specify some local files that contain list of audio and transcription files*
@@ -450,7 +465,8 @@ for f in text_files:
 	with open('../preprocess_kaldi_labels/recipes/'+f) as recipe_file:
 		numlines=sum(1 for _ in recipe_file)
 	collections.append({'name' : f, 'recipe' : '../preprocess_kaldi_labels/recipes/'+f, 'condition' : 'clean', 'numlines' :  numlines})
-
+	recipe_file.close()
+		
 #conf.debug=True
 
 numcores=1
