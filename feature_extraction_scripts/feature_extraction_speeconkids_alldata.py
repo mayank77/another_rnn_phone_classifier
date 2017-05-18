@@ -58,13 +58,13 @@ class extract_config:
     # Output lots of progress information on screen:
     debug = False
 
-    ## dictionary preprocessing_scipts
+    ## dictionary preprocessing_scripts
     # A list of preprocessing scripts; Each audio file will be preprocessed with
     # a randomly selected preprocessing script, which will normalise audio by 
     # peak value and convert it into standard format readable by the next
     # script, possibly adding noise or degrading the signal somehow while doing
     # that.
-    preprocessing_scipts = {}
+    preprocessing_scripts = {}
 
     ## string feature_extraction_script
     # This is 
