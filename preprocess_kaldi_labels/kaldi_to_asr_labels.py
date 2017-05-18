@@ -130,6 +130,22 @@ combinations = ['aa','ai','ao','ae',
 
 labelfilehandle=open(sys.argv[1], 'r')
 
+###
+#Check for EOF or manually add
+last_line=labelfilehandle.readlines()[-1]
+if (last_line.split()[-1]!="6"):
+    sec = ("%.3f" % float(os.popen("sh length.sh "+"/teamwork/t40511_asr/c/speecon-fi/adult/ADULT1FI/BLOCK"+sys.argv[1].split("/")[1].replace("SA","")[:-1]+"/"+sys.argv[1].split("/")[1].replace("SA","SES")+"/"+sys.argv[1].split("/")[2].replace("raw_label","FI0")).read().strip('\n')))
+    with open(sys.argv[1], "a") as f:
+        start_EOF = ("%.3f" % float(float(last_line.split()[0].strip('\n'))+float(last_line.split()[1].strip('\n'))) )
+        end_EOF = float(sec) - float(start_EOF)
+	end_EOF = ("%.3f" % float( 0.02000*int((end_EOF*10000)/200) ) )
+        f.write(str(start_EOF)+" "+str(end_EOF)+" 6")
+    f.close()
+labelfilehandle.close()
+###
+
+labelfilehandle=open(sys.argv[1], 'r')
+
 oldaaltophone = ""
 oldstart = 0
 oldend = 0
@@ -155,8 +171,8 @@ for l in labelfilehandle.readlines():
         #print ("%i\t%i\t%s" % ( oldstart, end, oldaaltophone+aaltophone ))
         monoarray.append([ oldstart, end, oldaaltophone+aaltophone ])
         oldaaltophone = ""
-        oldstart = ""
-        oldend = ""
+        #oldstart = ""
+        oldend = end
     elif position == "_E":
         if len(oldaaltophone)>0:
             #print ("%i\t%i\t%s" % ( oldstart, oldend, oldaaltophone ))
